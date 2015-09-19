@@ -11,18 +11,15 @@ class Loader
 		spl_autoload_register(array($this, 'load'));
 	}	
 	
-	public static function getInstance(){
-		
+	public static function getInstance(){		
 		if(null === self::$_instance){
 			//create new instance
 			self::$_instance = new self();
-		}
-		
+		}		
 		return self::$_instance;
 	}
 	
 	public function load($className){
-<<<<<<< HEAD
 			// замена разделителей
 		$classPath = '../'.str_replace('\\', '/', $className).'.php';
 		if(file_exists($classPath)){
@@ -47,7 +44,6 @@ class Loader
 	
 	public static function addNamespacePath($namespace, $path){
 		self::$_namespacePath[$namespace] = $path;
-=======
 			// вырезает namespace (путь к файлу)
 		$path = substr($className, 0, strrpos($className, "\\")+1); 
 			// путь к файлу в нижний регистр
@@ -63,7 +59,6 @@ class Loader
 	
 	public static function addNamespacePath($name, $path){
 		self::$_namespacePath[$name] = $path;
->>>>>>> origin/master
 	}
 
 	
