@@ -21,22 +21,11 @@ class Application
 						
 			if($refl->hasMethod($route['action'].'Action')){
 				
-			}
-			
+			}			
 		}
 		else{
 			echo "<b>The controller is not found<br />";
 			die;
-		}
-		
-		
-		
-		
-		//echo "Hello from Application (run)<br />";
-
-	public function __construct($config){
-		
-		$this->_config = $config;
-	}
-	
+		}		
+	}	
 }

@@ -6,6 +6,7 @@ class Router
 {
 	
 	public static function find($uri, $routes){
+		
 		$parts = explode('/', $uri);
 		array_shift($parts);
 		/*
@@ -24,7 +25,6 @@ class Router
 				return $val;
 			}
 		}
-		return false;
-		
+		return false;		
 	}
 }
