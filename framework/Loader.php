@@ -22,6 +22,7 @@ class Loader
 	}
 	
 	public function load($className){
+<<<<<<< HEAD
 			// замена разделителей
 		$classPath = '../'.str_replace('\\', '/', $className).'.php';
 		if(file_exists($classPath)){
@@ -46,6 +47,23 @@ class Loader
 	
 	public static function addNamespacePath($namespace, $path){
 		self::$_namespacePath[$namespace] = $path;
+=======
+			// вырезает namespace (путь к файлу)
+		$path = substr($className, 0, strrpos($className, "\\")+1); 
+			// путь к файлу в нижний регистр
+		$classPath = "..\\".str_replace(array($path, '\\'), array(strtolower($path), DIRECTORY_SEPARATOR), $className).".php";
+				
+		if(file_exists($classPath)){
+			include $classPath;
+		}else{
+			//поиск в $namespacePath
+			
+		}		
+	}
+	
+	public static function addNamespacePath($name, $path){
+		self::$_namespacePath[$name] = $path;
+>>>>>>> origin/master
 	}
 
 	
