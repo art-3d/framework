@@ -20,7 +20,6 @@ class Application
 			$refl = new \ReflectionClass($ctrl);
 						
 			if($refl->hasMethod($route['action'].'Action')){
-				
 			}			
 		}
 		else{

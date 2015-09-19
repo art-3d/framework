@@ -22,9 +22,12 @@ class Loader
 	}
 	
 	public function load($className){
-		
+			// путь к файлу
+		$path = substr($className, 0, strpos($className, "\\")+1);
+			// путь к файлу в нижний регистр
+		$classPath = str_replace($path, strtolower($path), $className);
 			// замена разделителей
-		$classPath = '../'.str_replace('\\', '/', $className).'.php';
+		$classPath = '../'.str_replace('\\', '/', $classPath).'.php';
 		if(file_exists($classPath)){
 			include_once $classPath;
 		}else{

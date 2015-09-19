@@ -11,9 +11,9 @@ class Router
 		array_shift($parts);
 		/*
 			DELETE NEXT LINE!!! (!documentroot)
-		
-		array_shift($parts);
+			array_shift($parts);
 		*/
+		
 		$controller = array_shift($parts);
 		$action = array_shift($parts);
 		
