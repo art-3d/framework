@@ -2,6 +2,8 @@
 
 namespace Framework;	
 
+use Framework\Router\Router;
+
 class Application
 {
 	
@@ -15,7 +17,7 @@ class Application
 	public function run(){
 		
 		$config = $this->_config;
-		if($route = Router\Router::find($_SERVER['REQUEST_URI'], $config['routes'])){
+		if($route = Router::find($_SERVER['REQUEST_URI'], $config['routes'])){
 			$ctrl = $route['controller'];
 			$refl = new \ReflectionClass($ctrl);
 						

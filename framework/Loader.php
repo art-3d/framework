@@ -22,14 +22,13 @@ class Loader
 	}
 	
 	public function load($className){
-			// путь к файлу
-		$path = substr($className, 0, strpos($className, "\\")+1);
-			// путь к файлу в нижний регистр
-		$classPath = str_replace($path, strtolower($path), $className);
+		
+		$loadStatus = false;
 			// замена разделителей
-		$classPath = '../'.str_replace('\\', '/', $classPath).'.php';
+		$classPath = '../' . lcfirst(str_replace('\\', '/', $className)) . '.php';
 		if(file_exists($classPath)){
 			include_once $classPath;
+			$loadStatus = true;
 		}else{
 			// поиск в $namespacePath (проверка через рег. )
 			foreach(self::$_namespacePath as $namespace => $path){
@@ -41,11 +40,15 @@ class Loader
 					$classPath = str_replace('\\', '/', $classPath).'.php';
 					if(file_exists($classPath)){
 						include_once $classPath;
+						$loadStatus = true;
 						break;
 					}
 				}
 			}
 		}
+		/*if(!$loadStatus){
+			echo $classPath . ' не найден<br />';
+		}*/
 	}
 	
 	public static function addNamespacePath($name, $path){
