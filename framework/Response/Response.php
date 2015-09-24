@@ -19,24 +19,24 @@ class Response implements ResponseInterface
 	
 	public function send(){
 		
-		$this->setHeader('HTTP/1.1 ' . $this->code . '' . $this->msg);
+		$this->setHeader('HTTP/1.1 ' . $this->code . ' ' . $this->msg);
 		headers(implode("\n", $this->headers));
 		
 		echo $this->getContent();
 	}
 	
-	protected function getContent(){
+	public function getContent(){
 		
 		return $this->content;
 	}
 	
-	protected function getCode(){
+	public function getCode(){
 		
 		return $this->code;
 	}
 	
 	
-	protected function setHeader($header){
+	public function setHeader($header){
 		
 		$this->headers[] = $header;
 	}
