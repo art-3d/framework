@@ -27,7 +27,7 @@ class Renderer
 		$controller = $app->config['controller'];
 		
 		$view_path = preg_replace('/Controller/', 'views', $controller, 1);
-		$view_path = __DIR__ . '/../../src/' . str_replace('Controller', '', $viewPath) . '\\' . $this->view . $this->viewExtension;
+		$view_path = __DIR__ . '/../../src/' . str_replace('Controller', '', $view_path) . '\\' . $this->view . $this->viewExtension;
 		
 		ob_start();		
 		extract($this->data);		
