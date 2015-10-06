@@ -8,6 +8,11 @@ class Service
 	protected static $_instance;
 	
 	private static $services = array();
+
+	private function __construct(){
+		
+		spl_autoload_register(array($this, 'load'));
+	}
 	
 	public static function getInstance(){
 		
@@ -26,9 +31,6 @@ class Service
 	public static function get($service_name){
 		
 		return empty(self::$services[$service_name]) ? null : self::$services[$service_name];
-	}
-	
-	private function __construct(){
 	}
 	
 	private function __clone(){		

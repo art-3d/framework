@@ -5,3 +5,4 @@ Options -Indexes
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^(.*)$ index.php [QSA,L]
 </IfModule>
+AddDefaultCharset UTF-8

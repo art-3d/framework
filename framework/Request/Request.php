@@ -2,6 +2,8 @@
 
 namespace Framework\Request;
 
+use Framework\DI\Service;
+
 class Request
 {	
 	
@@ -21,8 +23,8 @@ class Request
 		return $_SERVER['REQUEST_METHOD'];
 	}
 	
-	public function isPost($var){
-		return $this->getMethod($var) == 'POST';
+	public function isPost(){
+		return $this->getMethod($var) == 'POST';		
 	}
 	
 	public function post($varname, $filterType = 'def'){
@@ -33,8 +35,20 @@ class Request
 		return isset($_GET[$varname]) ? $this->filter($_GET[$varname], $filterType) : null;
 	}
 	
-	private function filter($varname, $filterType = 'def'){
-		// TODO
+	private function filter($var, $filterType = 'def'){
+		
+		switch($filterType){
+			case 'int' : 
+				
+				break;
+			default :
+				$var = strip_tags($var);
+				$var = htmlentities($var, ENT_QUOTES, "UTF-8");
+				$var = htmlspecialchars($var, ENT_QUOTES);
+				break;
+		}
+		
+		return $var;
 	}
 	
 }

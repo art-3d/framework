@@ -3,7 +3,8 @@
 namespace Framework\Response;
 
 class Response implements ResponseInterface
-{
+{	
+	public $type = 'html';
 	
 	protected $content;
 	protected $msg;
@@ -14,13 +15,13 @@ class Response implements ResponseInterface
 		
 		$this->content = $content;
 		$this->msg = $msg;
-		$thid->code = $code;
+		$this->code = $code;
 	}
 	
 	public function send(){
 		
 		$this->setHeader('HTTP/1.1 ' . $this->code . ' ' . $this->msg);
-		headers(implode("\n", $this->headers));
+		header(implode("\n", $this->headers));
 		
 		echo $this->getContent();
 	}

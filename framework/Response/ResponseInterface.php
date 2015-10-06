@@ -1,6 +1,8 @@
 <?php
 
-namespace Framework\ResponseInterface
+namespace Framework\Response;
+
+interface ResponseInterface
 {
 	function setHeader($header);
 	
