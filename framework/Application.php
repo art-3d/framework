@@ -20,14 +20,16 @@ class Application
 	
 	public function run(){
 		
-		$config = $this->config;
+		$router = new Router($this->config['routes']);
 		
-		$router = new Router($config['routes']);
-		$request = new Request();
-		
-		Service::set('request', $request);
-		Service::set('router', $router);
+		$opt = array(
+			\PDO::ATTR_ERRMODE            => \PDO::ERRMODE_EXCEPTION,
+			\PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC
+		);	
+		Service::set('pdo', new \PDO($this->config['pdo']['dns'], $this->config['pdo']['user'], $this->['pdo']['password'], $opt));		
 		Service::set('application', $this);
+		Service::set('router', $router);
+		Service::set('request', new Request);
 		
 		try{			
 			if($route = $router->find($_SERVER['REQUEST_URI'])){
@@ -40,18 +42,18 @@ class Application
 				if($controllerReflection->hasMethod($action)){
 					$reflectionMethod = new \ReflectionMethod($controller, $action);
 					
-						if(!empty($route['parameters'])){
-							$response = $reflectionMethod->invokeArgs(new $controller, $route['parameters']);
-						}else{
-							$response = $reflectionMethod->invoke(new $controller);
-						}
-						if(is_subclass_of($response, 'Framework\Response\ResponseInterface')){
+					if(!empty($route['parameters'])){
+						$response = $reflectionMethod->invokeArgs(new $controller, $route['parameters']);
+					}else{
+						$response = $reflectionMethod->invoke(new $controller);
+					}
+					if(is_subclass_of($response, 'Framework\Response\ResponseInterface')){
+						
+						if($response->type == 'html'){
 							
-							if($response->type == 'html'){
-								
-								$response->send();								
-							}							
-						}	
+							$response->send();								
+						}							
+					}	
 						
 				}else{
 					// The action is not found
