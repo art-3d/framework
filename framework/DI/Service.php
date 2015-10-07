@@ -5,32 +5,19 @@ namespace Framework\DI;
 class Service
 {
 	
-	protected static $_instance;
+	private static $objects = array();
 	
-	private static $services = array();
-
-	private function __construct(){
+	public static function set($name, $object){
 		
-		spl_autoload_register(array($this, 'load'));
+		self::$objects[$name] = $object;
 	}
 	
-	public static function getInstance(){
+	public static function get($name){
 		
-		if(null === self::$_instance){
-			//create new instance
-			self::$_instance = new self();
-		}		
-		return self::$_instance;
-	}	
-	
-	public static function set($service_name, $object){
-		
-		self::$services[$service_name] = $object;
+		return empty(self::$objects[$name]) ? null : self::$objects[$name];
 	}
 	
-	public static function get($service_name){
-		
-		return empty(self::$services[$service_name]) ? null : self::$services[$service_name];
+	private function __construct(){		
 	}
 	
 	private function __clone(){		
