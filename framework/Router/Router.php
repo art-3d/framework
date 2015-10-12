@@ -3,41 +3,65 @@
 namespace Framework\Router;
 
 use Framework\DI\Service;
+use Framework\Exception\HttpNotFoundException;
 
 class Router
 {
+	
+	/**
+	 * @var array routing map.
+	 */
 	protected $map = array();
 	
+	/**
+	 * @param array.
+	 * @return void.
+	 */
 	public function __construct($routing_map){
 		$this->map = $routing_map;
 	}	
 	
-	public function buildRoute($index, $params = array()){
+	/**
+	 * @param string name of route.
+	 * @param array parameters of route.
+	 * @return string route.
+	 */
+	public function buildRoute($name, $params = array()){
 		
-		$routePattern = $this->map[$index]['pattern'];
+		$routePattern = $this->map[$name]['pattern'];
 		if(!empty($params)){
 			foreach($params as $key => $val){
+				
 				$routePattern = str_replace('{' . $key . '}', $val, $routePattern);
 			}
 		}
 		return 'http://' . $_SERVER['SERVER_NAME'] . $routePattern;
 	}
 	
-	public function find($uri){
+	/**
+	 * Searching route on the routing map.
+	 * @param string.
+	 * @return array match route.
+	 */
+	public function find($uri){		
 		
-		$uri = substr($uri, 4); // DELETE THIS
-		
-		$match_route = null;
+		$match_route = null;		
 		
 		if(!empty($this->map)){
-			foreach($this->map as $route){
-				$pattern = $this->patternToRegexp($route['pattern'], $route['_requirements']);	
+			foreach($this->map as $route){				
+				$requirements = isset($route['_requirements']) ? $route['_requirements'] : array();
+				$pattern = $this->patternToRegexp($route['pattern'], $requirements);	
+			
 				if(preg_match($pattern, $uri)){
-					// CHECK METHOD					
 					
+						# check METHOD
+					if(isset($requirements['_method']) && $requirements['_method'] != Service::get('request')->getMethod()){
+						continue;
+						//throw new HttpNotFoundException('Need ' . $requirements['_method'] . ' method!');
+					}				
 					$match_route = $route;
 					
-					// parsing					
+						# parsing				
 					$uri_explode = explode('/', $uri);					
 					
 					if(count($uri_explode) > 2){
@@ -58,17 +82,18 @@ class Router
 						}						
 						$match_route['parameters'] = $params; // from parsing
 					}					
-					break;
+					break; //совпадение найдено 
 				}
 			}			
 		}
 		return $match_route;
 	}
 	
-	protected function getMethod(){
-		return $_SERVER['REQUEST_METHOD'];
-	}
-	
+	/**
+	 * @param string pattern.
+	 * @param array.
+	 * @return string regular expressions.
+	 */
 	protected function patternToRegexp($pattern, $requirement = array()){
 		if(!empty($requirement)){
 			foreach($requirement as $key => $val){

@@ -2,9 +2,15 @@
 	
 class Loader
 {	
-	
+
+    /**
+     * @var object.
+     */	
 	protected static $_instance;
 	
+    /**
+     * @var array.
+     */	
 	private static $_namespacePath = array();
 	
 	private function __construct(){
@@ -12,6 +18,9 @@ class Loader
 		spl_autoload_register(array($this, 'load'));
 	}	
 	
+    /**
+     * @return object of class.
+     */	
 	public static function getInstance(){
 		
 		if(null === self::$_instance){
@@ -21,6 +30,9 @@ class Loader
 		return self::$_instance;
 	}
 	
+    /**
+     * @param string callable class name.
+     */	
 	public function load($className){
 		
 		$loadStatus = false;
@@ -51,6 +63,11 @@ class Loader
 		}*/
 	}
 	
+    /**
+	 * Save path to a namespace .
+     * @param string the beginning of class name.
+     * @param string path to the file.
+     */
 	public static function addNamespacePath($name, $path){
 		
 		self::$_namespacePath[$name] = $path;

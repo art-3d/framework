@@ -9,29 +9,48 @@ use Framework\DI\Service;
 
 abstract class Controller
 {	
-	
-	public static function render($view, $params = array()){
 
+    /**
+     * @param string view.
+     * @param array parameters of this view.
+     * @return object new Response.
+	 */		
+	public static function render($view, $params = array()){
+		
 		$renderer = new Renderer($view, $params);
 		return new Response($renderer->render());
 	}	
-	
+
+	/**
+	 * @return object Request.
+	 */
 	public function getRequest(){
 			
 		return Service::get('request');
 	}
 
+	/**
+	 * Save returnURI and message, redirecting.
+	 * @param string uri which redirecting.
+	 * @param string save the message in the session.
+	 * @return object new ResponseRedirect.
+	 */
 	public function redirect($url, $message = ''){
 		
-		// session_start();
-		// $_SESSION['message'] = $message;		
-		
-		return new ResponseRedirect($url); // ??
+		$session = Service::get('session');
+		$session->returnURI = Service::get('request')->getURI();
+		$session->set('message', $message);
+		return new ResponseRedirect($url);
 	}
 	
+	/**
+	 * @param string name of route.
+	 * @param array parameters of route.
+	 * @return string route.
+	 */
 	public function generateRoute($name, $parameters = array()){
-		
-		$route = Service::get('router');		
-		return $route->buildRoute($name, $parameters);
-	}	
+			
+		return Service::get('router')->buildRoute($name, $parameters);
+	}
+
 }

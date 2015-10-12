@@ -7,13 +7,18 @@ use Framework\DI\Service;
 class ResponseRedirect extends Response
 {
 	
+	/**
+	 * @var string type of response.
+	 */
 	public $type = 'redirect';
 	
+	/*
+	 * @param string.
+	 * @return void.
+	 */
 	public function __construct($url){
 		
-		//$router = Service::get('router');
-		//$location = 'http://' . $_SERVER['SERVER_NAME'] . $url;
-		// save some parameters
+		// save some parameters ($_SESSION['message'])
 			
 		header('Location: ' . $url);
 	}

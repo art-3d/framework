@@ -4,8 +4,12 @@ namespace Framework\Model;
 
 use Framework\DI\Service;
 
-abstract class ActiveRecord{
+class ActiveRecord{
 
+	/**
+	 * @param int primary key of table.
+	 * @return object row the found.
+	 */
 	public static function find($id){
 		
 		if($id == 'all'){
@@ -16,35 +20,40 @@ abstract class ActiveRecord{
 		}
 		$pdo = Service::get('pdo');
 		$stmt = $pdo->prepare($query);
-		$stmt->execute();
-		return $stmt->fetch();
+		$stmt->execute();		
+		return $stmt->fetchObject();
 	}
 	
+	/**
+	 * @return array of objects (all rows).
+	 */
 	protected static function findAll(){
 		$pdo = Service::get('pdo');
 		$query = "SELECT * FROM `" . static::getTable() . "`";
 		$stmt = $pdo->prepare($query);
 		$stmt->execute();
-		return $stmt->fetchAll();
+		return $stmt->fetchAll($pdo::FETCH_CLASS);
 	}
 	
-	public static function query($query){
+	/**
+	 * @param string query into database.
+	 * @return object result of query.
+	 */
+	public static function select($query){
 		$pdo = Service::get('pdo');
 		$stmt = $pdo->prepare($query);
 		$stmt->execute();
-		return $stmt->fetchAll();
+		return $stmt->fetchObject();
 	}
 
-		
-	/*
-		Сохраняет все public свойства в таблицу
-	*/
+	/**
+	 * Save all public properties.
+	 * @return void.
+	 */
 	public function save(){
 		
-		parent::init();
-		
-		$reflect = new ReflectionClass($this);
-		$public_props = $reflect->getProperties(ReflectionProperty::IS_PUBLIC);		
+		$reflect = new \ReflectionClass($this);
+		$public_props = $reflect->getProperties(\ReflectionProperty::IS_PUBLIC);		
 		
 		$props_name = array();
 		$props_value = array();
@@ -57,7 +66,8 @@ abstract class ActiveRecord{
 		$values = "( '" . implode("', '", $props_value) . "' )"; 
 		
 		$query = 'INSERT INTO `' . $this->getTable() . '` ' . $names . ' VALUES ' . $values;
-		$stmt = self::$pdo->query($query);		
+		$result = Service::get('pdo')->query($query);		
 	}
+
 	
 }
