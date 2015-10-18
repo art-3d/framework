@@ -11,45 +11,45 @@ abstract class Controller
 {	
 
     /**
-     * @param string view.
-     * @param array parameters of this view.
+     * @param string $view.
+     * @param array $params parameters of this view.
      * @return object new Response.
 	 */		
-	public static function render($view, $params = array()){
-		
-		$renderer = new Renderer($view, $params);
-		return new Response($renderer->render());
+	public static function render($view, $params = array())
+	{		
+		$renderer = Service::get('renderer');
+		return new Response($renderer->render($view, $params));
 	}	
 
 	/**
 	 * @return object Request.
 	 */
-	public function getRequest(){
-			
+	public function getRequest()
+	{			
 		return Service::get('request');
 	}
 
 	/**
 	 * Save returnURI and message, redirecting.
-	 * @param string uri which redirecting.
-	 * @param string save the message in the session.
-	 * @return object new ResponseRedirect.
+	 * @param string $url uri redirect to.
+	 * @param string $message save the message in the session.
+	 * @return void.
 	 */
-	public function redirect($url, $message = ''){
-		
+	public function redirect($url, $message = '')
+	{		
 		$session = Service::get('session');
 		$session->returnURI = Service::get('request')->getURI();
 		$session->set('message', $message);
-		return new ResponseRedirect($url);
+		new ResponseRedirect($url);
 	}
 	
 	/**
-	 * @param string name of route.
-	 * @param array parameters of route.
+	 * @param string $name the name of route.
+	 * @param array $parameters  the parameters of route.
 	 * @return string route.
 	 */
-	public function generateRoute($name, $parameters = array()){
-			
+	public function generateRoute($name, $parameters = array())
+	{			
 		return Service::get('router')->buildRoute($name, $parameters);
 	}
 

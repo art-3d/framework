@@ -27,7 +27,7 @@ class SecurityController extends Controller
         if ($this->getRequest()->isPost()) {
 
             if ($user = User::findByEmail($this->getRequest()->post('email'))) {
-                if ($user->password == $this->getRequest()->post('password')) {
+                if ($user->password == md5($this->getRequest()->post('password'))) {
                     Service::get('security')->setUser($user);
                     $returnUrl = Service::get('session')->returnUrl;
                     unset(Service::get('session')->returnUrl);
@@ -58,7 +58,7 @@ class SecurityController extends Controller
             try{
                 $user           = new User();
                 $user->email    = $this->getRequest()->post('email');
-                $user->password = $this->getRequest()->post('password');
+                $user->password = md5($this->getRequest()->post('password'));
                 $user->role     = 'ROLE_USER';
                 $user->save();
                 return $this->redirect($this->generateRoute('home'));

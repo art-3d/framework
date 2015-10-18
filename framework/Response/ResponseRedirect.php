@@ -13,13 +13,11 @@ class ResponseRedirect extends Response
 	public $type = 'redirect';
 	
 	/*
-	 * @param string.
+	 * @param string $url.
 	 * @return void.
 	 */
-	public function __construct($url){
-		
-		// save some parameters ($_SESSION['message'])
-			
+	public function __construct($url)
+	{		
 		header('Location: ' . $url);
 	}
 	

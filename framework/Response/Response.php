@@ -31,13 +31,13 @@ class Response implements ResponseInterface
 	protected $headers = array();
 	
 	/**
-	 * @param string content of response.
-	 * @param string messaeg of header.
-	 * @param int code of header.
+	 * @param string $content content of response.
+	 * @param string $msg messaeg of header.
+	 * @param int $code code of header.
 	 * @return void.
 	 */
-	public function __construct($content, $msg = '', $code = 200){
-		
+	public function __construct($content, $msg = '', $code = 200)
+	{		
 		$this->content = $content;
 		$this->msg = $msg;
 		$this->code = $code;
@@ -47,8 +47,8 @@ class Response implements ResponseInterface
 	 * Sending the response.
 	 * @return void.
 	 */
-	public function send(){
-		
+	public function send()
+	{		
 		$this->setHeader('HTTP/1.1 ' . $this->code . ' ' . $this->msg);
 		header(implode("\n", $this->headers));
 		
@@ -58,24 +58,24 @@ class Response implements ResponseInterface
 	/**
 	 * @return string content.
 	 */
-	public function getContent(){
-		
+	public function getContent()
+	{		
 		return $this->content;
 	}
 	
 	/**
 	 * @return int code of header.
 	 */
-	public function getCode(){
-		
+	public function getCode()
+	{		
 		return $this->code;
 	}
 	
 	/**
 	 * @return void.
 	 */	
-	public function setHeader($header){
-		
+	public function setHeader($header)
+	{		
 		$this->headers[] = $header;
 	}
 	

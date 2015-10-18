@@ -27,9 +27,11 @@ class Router
 	 * @return string route.
 	 */
 	public function buildRoute($name, $params = array()){
-		
+				
 		$routePattern = $this->map[$name]['pattern'];
 		if(!empty($params)){
+			echo '<pre>';
+			print_r($params);
 			foreach($params as $key => $val){
 				
 				$routePattern = str_replace('{' . $key . '}', $val, $routePattern);
@@ -39,7 +41,7 @@ class Router
 	}
 	
 	/**
-	 * Searching route on the routing map.
+	 * Searching of route in routing map by uri.
 	 * @param string.
 	 * @return array match route.
 	 */
@@ -56,7 +58,6 @@ class Router
 					
 						# check METHOD
 					if(isset($requirements['_method']) && $requirements['_method'] != Service::get('request')->getMethod()){
-						continue;
 						//throw new HttpNotFoundException('Need ' . $requirements['_method'] . ' method!');
 					}				
 					$match_route = $route;

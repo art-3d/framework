@@ -7,10 +7,11 @@ use Framework\DI\Service;
 class ActiveRecord{
 
 	/**
-	 * @param int primary key of table.
-	 * @return object row the found.
+	 * @param int $id primary key of table.
+	 * @return object of found rows.
 	 */
-	public static function find($id){
+	public static function find($id)
+	{
 		
 		if($id == 'all'){
 			return self::findAll();
@@ -27,7 +28,8 @@ class ActiveRecord{
 	/**
 	 * @return array of objects (all rows).
 	 */
-	protected static function findAll(){
+	protected static function findAll()
+	{
 		$pdo = Service::get('pdo');
 		$query = "SELECT * FROM `" . static::getTable() . "`";
 		$stmt = $pdo->prepare($query);
@@ -36,21 +38,34 @@ class ActiveRecord{
 	}
 	
 	/**
-	 * @param string query into database.
+	 * @param string $query query into database.
 	 * @return object result of query.
 	 */
-	public static function select($query){
+	public static function select($query)
+	{
 		$pdo = Service::get('pdo');
 		$stmt = $pdo->prepare($query);
 		$stmt->execute();
 		return $stmt->fetchObject();
+	}
+	
+	/**
+	 * @param string $query.
+	 * @return void.
+	 */
+	public static function update($query)
+	{
+		$pdo = Service::get('pdo');
+		$stmt = $pdo->prepare($query);
+		$stmt->execute();
 	}
 
 	/**
 	 * Save all public properties.
 	 * @return void.
 	 */
-	public function save(){
+	public function save()
+	{
 		
 		$reflect = new \ReflectionClass($this);
 		$public_props = $reflect->getProperties(\ReflectionProperty::IS_PUBLIC);		

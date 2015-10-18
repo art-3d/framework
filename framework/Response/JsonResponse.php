@@ -4,16 +4,25 @@ namespace Framework\Response;
 
 class JsonResponse extends Response
 {
+	/**
+	 * @var string type of response.
+	 */
 	
 	public $type = 'json';
 	
-	public function __construct() 
+	
+	/**
+	 * @param string $content.
+	 * @return void.
+	 */
+	public function __construct($content) 
 	{ 
-		//$this->setHeader('HTTP/1.1 ' . $this->code . ' ' . $this->msg); 
-		$this->setHeader('Content-Type: application/json'); 
-
+		$this->content = $content;
+		$this->setHeader('HTTP/1.1 ' . $this->code . ' ' . $this->msg); 
+		//$this->setHeader('Content-Type: application/json');
 		header(implode("\n", $this->headers)); 
-		$this->content = json_encode($this->getContent()); 
+				
+		echo json_encode($this->getContent()); 
 	} 
 
 }

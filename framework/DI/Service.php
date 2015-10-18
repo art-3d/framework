@@ -16,8 +16,8 @@ class Service
 	 * @param object.
 	 * @return void.
 	 */
-	public static function set($name, $object){
-		
+	public static function set($name, $object)
+	{		
 		self::$objects[$name] = $object;
 	}
 	
@@ -26,8 +26,8 @@ class Service
 	 * @param string object name.
 	 * @return object|null.
 	 */
-	public static function get($name){
-		
+	public static function get($name)
+	{		
 		return empty(self::$objects[$name]) ? null : self::$objects[$name];
 	}
 	

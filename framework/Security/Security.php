@@ -6,24 +6,22 @@ use Framework\DI\Service;
 
 class Security {	
 	
-	public function setUser($user){
-		
+	public function setUser($user)
+	{		
 		$session = Service::get('session');
-		$session->set('auth_status', true);
-		// save user props
-		
+		$session->set('user', $user);
 	}
 	
-	public function clear(){
-		
+	public function clear()
+	{		
 		$session = Service::get('session');
-		$sesion->destroy();
+		$session->destroy();
 	}
 	
-	public function isAuthenticated(){
-		
+	public function isAuthenticated()
+	{		
 		$session = Service::get('session');
-		return $session->get('auth_status') ? true : false;
+		return $session->get('user') ? true : false;
 	}
 	
 }

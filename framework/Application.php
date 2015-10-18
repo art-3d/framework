@@ -9,6 +9,7 @@ use Framework\Renderer\Renderer;
 use Framework\Exception\HttpNotFoundException;
 use Framework\Session\Session;
 use Framework\Security\Security;
+use Framework\Response\Response;
 
 class Application
 {
@@ -19,41 +20,41 @@ class Application
 	public $config;
 	
 	/**
-	 * @param array configuration of application.
+	 * @param array $configPath configuration of application.
 	 * @return void.
 	 */
-	public function __construct($configPath){
-		
+	public function __construct($configPath)
+	{		
 		$this->config = include_once($configPath);
+		
+		Service::set('application', $this);
+		Service::set('router', new Router($this->config['routes']));
+		Service::set('request', new Request);
+		Service::set('renderer', new Renderer);
+		Service::set('session', new Session);
+		Service::set('security', new Security);		
 	}
 	
 	/**
 	 * Initialization of application.
 	 * @return void.
 	 */
-	public function run(){
-		
-		$router = new Router($this->config['routes']);
-		
+	public function run()
+	{		
 		$opt = array(
 			\PDO::ATTR_ERRMODE            => \PDO::ERRMODE_EXCEPTION,
 			\PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC
 		);
 		$pdo_cfg = $this->config['pdo'];
 		Service::set('pdo', new \PDO($pdo_cfg['dns'], $pdo_cfg['user'], $pdo_cfg['password'], $opt));		
-		Service::set('application', $this);
-		Service::set('router', $router);
-		Service::set('request', new Request);
-		Service::set('session', new Session);
-		Service::set('security', new Security);
 		
 		try{			
-			if($route = $router->find($_SERVER['REQUEST_URI'])){
+			if($route = Service::get('router')->find($_SERVER['REQUEST_URI'])){
 				
 					// check security
 				if(isset($route['security'])){
 					if(!Service::get('security')->isAuthenticated()){
-						
+						throw new \Exception('You don\'t have permission to access on this server');
 					}
 				}
 			
@@ -74,8 +75,7 @@ class Application
 							
 							$response->send();								
 						}							
-					}	
-						
+					}						
 				}else{
 					// The action is not found
 					throw new HttpNotFoundException('Page Not Found!');
@@ -85,7 +85,10 @@ class Application
 				throw new HttpNotFoundException('Page Not Found!');
 			}
 		}catch( \Exception $e ){
-			echo 'Exception is throw: <b>' . $e->getMessage() . '</b><br />';
+			$errors = array('message' => $e->getMessage(), 'code' => $e->getCode());			
+			$path_500 = str_replace('\\', '/', __DIR__ . '/../src/Blog/views/500.html.php');
+			$response = new Response(Service::get('renderer')->render($path_500, $errors, true));
+			$response->send();
 		}
 	}	
 }
