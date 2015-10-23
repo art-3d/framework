@@ -31,7 +31,7 @@ class ProfileController extends Controller
 					$profile->password = md5($pswd_new);
 					$profile->updateProfile();
 					Service::get('security')->clear();
-					return $this->redirect($this->generateRoute('signin'));
+					return $this->redirect($this->generateRoute('home'), 'The password has been updated');
 				}else{
 					throw new \Exception('An error in the password');
 				}				

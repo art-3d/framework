@@ -41,13 +41,24 @@ abstract class ActiveRecord{
 	 * @param string $query query into database.
 	 * @return object result of query.
 	 */
-	public static function query($query)
+	public static function select($query)
 	{
 		$pdo = Service::get('pdo');
 		$stmt = $pdo->prepare($query);
 		$stmt->execute();
 		return $stmt->fetchObject();
 	}
+	
+	/**
+	 * @param string $query query into database.
+	 * @return void.
+	 */
+	public static function query($query)
+	{
+		$pdo = Service::get('pdo');
+		$stmt = $pdo->prepare($query);
+		$stmt->execute();
+	}	
 
 	/**
 	 * Save all public properties.
@@ -80,6 +91,6 @@ abstract class ActiveRecord{
 	public static function findByEmail($email)
 	{
 		$query = 'SELECT * FROM `' . static::getTable() . '`';
-		return self::query($query);
+		return self::select($query);
 	}	
 }
