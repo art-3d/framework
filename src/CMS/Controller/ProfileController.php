@@ -41,7 +41,7 @@ class ProfileController extends Controller
 		}
 		
         if (!$profile = Service::get('session')->get('user')) {
-            throw new HttpNotFoundException('Profile Not Found!');
+            throw new HttpNotFoundException('Profile is not found!');
         }
 		return $this->render('update.html', array('profile' => $profile));		
 	}	

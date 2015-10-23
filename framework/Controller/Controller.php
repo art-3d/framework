@@ -39,7 +39,9 @@ abstract class Controller
 	{		
 		$session = Service::get('session');
 		$session->returnURI = Service::get('request')->getURI();
-		$session->set('message', $message);
+		if(!empty($message)){
+			$session->set('message', array('info' => array($message)));
+		}
 		new ResponseRedirect($url);
 	}
 	

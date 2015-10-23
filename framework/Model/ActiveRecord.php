@@ -4,7 +4,7 @@ namespace Framework\Model;
 
 use Framework\DI\Service;
 
-class ActiveRecord{
+abstract class ActiveRecord{
 
 	/**
 	 * @param int $id primary key of table.
@@ -41,23 +41,12 @@ class ActiveRecord{
 	 * @param string $query query into database.
 	 * @return object result of query.
 	 */
-	public static function select($query)
+	public static function query($query)
 	{
 		$pdo = Service::get('pdo');
 		$stmt = $pdo->prepare($query);
 		$stmt->execute();
 		return $stmt->fetchObject();
-	}
-	
-	/**
-	 * @param string $query.
-	 * @return void.
-	 */
-	public static function update($query)
-	{
-		$pdo = Service::get('pdo');
-		$stmt = $pdo->prepare($query);
-		$stmt->execute();
 	}
 
 	/**
@@ -83,6 +72,14 @@ class ActiveRecord{
 		$query = 'INSERT INTO `' . $this->getTable() . '` ' . $names . ' VALUES ' . $values;
 		$result = Service::get('pdo')->query($query);		
 	}
-
 	
+	/**
+	 * @param string $email.
+	 * @return object.
+	 */
+	public static function findByEmail($email)
+	{
+		$query = 'SELECT * FROM `' . static::getTable() . '`';
+		return self::query($query);
+	}	
 }

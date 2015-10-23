@@ -39,6 +39,7 @@ class PostController extends Controller
                 $post->title   = $this->getRequest()->post('title');
                 $post->content = trim($this->getRequest()->post('content'));
                 $post->date    = $date->format('Y-m-d H:i:s');
+				$post->name    = Service::get('session')->get('user')->email;
 
                 $validator = new Validator($post);
                 if ($validator->isValid()) {
@@ -51,7 +52,6 @@ class PostController extends Controller
                 $error = $e->getMessage();
             }
         }
-
         return $this->render(
                     'add.html',
                     array('action' => $this->generateRoute('add_post'), 'errors' => isset($error)?$error:null)

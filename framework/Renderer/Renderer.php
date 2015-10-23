@@ -33,12 +33,13 @@ class Renderer
 	 * @return string content of requested view.
 	 */
 	public function render($view, $parameters=array(), $absolute_path = false)
-	{		
+	{	
 		$this->view = $view;
-		$this->parameters = $parameters;
+		$this->parameters = $parameters;		
 		
 		$app = Service::get('application');
 		$router = Service::get('router'); 
+		$session = Service::get('session');
 		
 			# путь к главному шаблону
 		$main_layout_path = $app->config['main_layout'];
@@ -66,19 +67,26 @@ class Renderer
 			
 		$generateToken = function()
 		{
-			return '';
+			$token = md5(date('G/i/s'));
+			setcookie('token', $token);
+			echo '<input type="hidden" name="token" value="' . $token . '" />'; 
 		};		
 			# End closures block **************			
 		
 		$user = Service::get('session')->get('user'); // object
 		
-		$flush = array();//Service::get('session')->get('flush'); // array
+		if($flush = $session->get('message')){
+			$session->delete('message');
+		}else{
+			$flush = array();
+		}
 		
 		ob_start();		
 		extract($this->parameters);
 		include($view_path);		
 		$content = ob_get_clean();		
 		
+			# Rendering into main template
 		ob_start();
 		include($main_layout_path);
 		return ob_get_clean();

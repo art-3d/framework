@@ -2,16 +2,17 @@
 
 namespace Framework\Validation\Filter;
 
-class NotBlank implements FilterInterface {
+use Framework\Validation\Filter\Filter;
+
+class NotBlank extends Filter implements FilterInterface {
   
   /**
-   * @var string entity of validation.
+   * @param string $entity entity of validation.
    * @return boolean.
    */
   public function validate($entity){
-	 
+	$this->message = 'Blank value';
 	return empty($entity) ? false : true;
   }
-  
   
 }

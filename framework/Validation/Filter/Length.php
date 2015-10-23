@@ -2,7 +2,9 @@
 
 namespace Framework\Validation\Filter;
 
-class Length implements FilterInterface {
+use Framework\Validation\Filter\Filter;
+
+class Length extends Filter implements FilterInterface {
   
   /**
    * @var int.
@@ -15,8 +17,8 @@ class Length implements FilterInterface {
   protected $maxLength;
 
   /**
-   * @param int.
-   * @param int.
+   * @param int $min.
+   * @param int $max.
    * @return void.
    */
   public function __construct($min, $max){
@@ -26,16 +28,16 @@ class Length implements FilterInterface {
   }
   
   /**
-   * @param string entity of validation.
+   * @param string $entity entity of validation.
    * @return boolean.
    */
   public function validate($entity){
 	$strlen = strlen($entity);
 	if($strlen < $this->minLength || $strlen > $this->maxLength){
+		$this->message = 'Wrong length';
 		return false;
 	}
 	return true;
-  }
-  
+  } 
   
 }

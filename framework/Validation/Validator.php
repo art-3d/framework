@@ -15,7 +15,7 @@ class Validator {
 	protected $errors = array();
 	
 	/**
-	 * @param object model.
+	 * @param $obj object model.
 	 * @return void.
 	 */
 	public function __construct($obj){
@@ -34,11 +34,10 @@ class Validator {
 			foreach($val as $filter){
 				
 				if(!$filter->validate($this->object->$key)){
-					$error_text = 'Error on ' . $key . '; Filter: ' . get_class($filter);
-					array_push($this->errors, $error_text);
+					$msg = $filter->getMessage();
+					$this->errors[$key] = $msg;
 					$error = true;
-				}
-				
+				}				
 			}
 		}
 		return $error ? false : true;

@@ -32,7 +32,14 @@ class Application
 		Service::set('request', new Request);
 		Service::set('renderer', new Renderer);
 		Service::set('session', new Session);
-		Service::set('security', new Security);		
+		Service::set('security', new Security);
+		
+		$opt = array(
+			\PDO::ATTR_ERRMODE            => \PDO::ERRMODE_EXCEPTION,
+			\PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC
+		);
+		$pdo_cfg = $this->config['pdo'];
+		Service::set('pdo', new \PDO($pdo_cfg['dns'], $pdo_cfg['user'], $pdo_cfg['password'], $opt));				
 	}
 	
 	/**
@@ -41,16 +48,15 @@ class Application
 	 */
 	public function run()
 	{		
-		$opt = array(
-			\PDO::ATTR_ERRMODE            => \PDO::ERRMODE_EXCEPTION,
-			\PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC
-		);
-		$pdo_cfg = $this->config['pdo'];
-		Service::set('pdo', new \PDO($pdo_cfg['dns'], $pdo_cfg['user'], $pdo_cfg['password'], $opt));		
-		
-		try{			
+
+		try{
+					// check token
+			if($token = Service::get('request')->post('token')){ 
+				if($_COOKIE['token'] != $token){
+					throw new \Exception('Wrong token!');
+				}	
+			}			
 			if($route = Service::get('router')->find($_SERVER['REQUEST_URI'])){
-				
 					// check security
 				if(isset($route['security'])){
 					if(!Service::get('security')->isAuthenticated()){
@@ -71,17 +77,16 @@ class Application
 
 					if(is_subclass_of($response, 'Framework\Response\ResponseInterface')){
 						
-						if($response->type == 'html'){
-							
+						if($response->type == 'html'){							
 							$response->send();								
 						}							
 					}						
 				}else{
-					// The action is not found
+					// the action is not found
 					throw new HttpNotFoundException('Page Not Found!');
 				}
 			}else{
-				// route is not found
+				// the route is not found
 				throw new HttpNotFoundException('Page Not Found!');
 			}
 		}catch( \Exception $e ){

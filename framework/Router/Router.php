@@ -14,24 +14,28 @@ class Router
 	protected $map = array();
 	
 	/**
-	 * @param array.
+	 * @var array route.
+	 */
+	protected $route = array();
+	
+	/**
+	 * @param array $routing_map.
 	 * @return void.
 	 */
-	public function __construct($routing_map){
+	public function __construct($routing_map)
+	{
 		$this->map = $routing_map;
 	}	
 	
 	/**
-	 * @param string name of route.
-	 * @param array parameters of route.
+	 * @param string $name name of route.
+	 * @param array $params parameters of route.
 	 * @return string route.
 	 */
-	public function buildRoute($name, $params = array()){
-				
+	public function buildRoute($name, $params = array())
+	{				
 		$routePattern = $this->map[$name]['pattern'];
 		if(!empty($params)){
-			echo '<pre>';
-			print_r($params);
 			foreach($params as $key => $val){
 				
 				$routePattern = str_replace('{' . $key . '}', $val, $routePattern);
@@ -42,15 +46,15 @@ class Router
 	
 	/**
 	 * Searching of route in routing map by uri.
-	 * @param string.
+	 * @param string $uri.
 	 * @return array match route.
 	 */
-	public function find($uri){		
-		
+	public function find($uri)
+	{				
 		$match_route = null;		
 		
 		if(!empty($this->map)){
-			foreach($this->map as $route){				
+			foreach($this->map as $name => $route){				
 				$requirements = isset($route['_requirements']) ? $route['_requirements'] : array();
 				$pattern = $this->patternToRegexp($route['pattern'], $requirements);	
 			
@@ -61,7 +65,7 @@ class Router
 						//throw new HttpNotFoundException('Need ' . $requirements['_method'] . ' method!');
 					}				
 					$match_route = $route;
-					
+					$match_route['_name'] = $name;
 						# parsing				
 					$uri_explode = explode('/', $uri);					
 					
@@ -82,12 +86,20 @@ class Router
 							}
 						}						
 						$match_route['parameters'] = $params; // from parsing
-					}					
+					}
 					break; //совпадение найдено 
 				}
 			}			
 		}
-		return $match_route;
+		return $this->route = $match_route;
+	}
+	
+	/**
+	 * @retur array.
+	 */
+	public function getRoute()
+	{
+		return $this->route;
 	}
 	
 	/**
@@ -95,7 +107,8 @@ class Router
 	 * @param array.
 	 * @return string regular expressions.
 	 */
-	protected function patternToRegexp($pattern, $requirement = array()){
+	protected function patternToRegexp($pattern, $requirement = array())
+	{
 		if(!empty($requirement)){
 			foreach($requirement as $key => $val){
 				if($key == '_method'){

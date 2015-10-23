@@ -18,7 +18,9 @@ class Profile extends ActiveRecord{
 	public function updateProfile()
 	{
 		$query = "UPDATE `" . $this->getTable() . "` SET `password`='" . $this->password . "' WHERE `email`='" . $this->email . "'";
-		$this->update($query);
+		if(!$this->query($query)){
+			throw new \Exception('Update profile error');
+		}
 	}
 	
 	

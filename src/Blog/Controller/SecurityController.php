@@ -31,7 +31,7 @@ class SecurityController extends Controller
                     Service::get('security')->setUser($user);
                     $returnUrl = Service::get('session')->returnUrl;
                     unset(Service::get('session')->returnUrl);
-                    return $this->redirect(!is_null($returnUrl)?$returnUrl:$this->generateRoute('home'));
+					return $this->redirect(!is_null($returnUrl)?$returnUrl:$this->generateRoute('home'));
                 }
             }
 
