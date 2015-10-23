@@ -71,7 +71,9 @@ class Renderer
 			setcookie('token', $token);
 			echo '<input type="hidden" name="token" value="' . $token . '" />'; 
 		};		
-			# End closures block **************			
+			# End closures block **************		
+			
+		$route = Service::get('router')->getRoute(); // array
 		
 		$user = Service::get('session')->get('user'); // object
 		
