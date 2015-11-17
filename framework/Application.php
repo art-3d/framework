@@ -39,7 +39,7 @@ class Application
 			\PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC
 		);
 		$pdo_cfg = $this->config['pdo'];
-		Service::set('pdo', new \PDO($pdo_cfg['dns'], $pdo_cfg['user'], $pdo_cfg['password'], $opt));				
+		Service::set('pdo', new \PDO($pdo_cfg['dsn'], $pdo_cfg['user'], $pdo_cfg['password'], $opt));				
 	}
 	
 	/**
