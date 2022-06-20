@@ -12,18 +12,19 @@ class Validator
 
 	public function isValid(): bool
 	{
+		$isValid = true;
 		$rules = $this->object->getRules();
 		foreach($rules as $key => $val) {
 			foreach($val as $filter) {
 				if (!$filter->validate($this->object->$key)) {
 					$msg = $filter->getMessage();
 					$this->errors[$key] = $msg;
-					$error = true;
+					$isValid = false;
 				}
 			}
 		}
 
-		return $error ? false : true;
+		return $isValid;
 	}
 
 	public function getErrors(): array

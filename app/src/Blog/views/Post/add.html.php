@@ -101,7 +101,9 @@ $getErrorBody = function ($field) use ($errors) {
                     </div>
 
                     <div id="editor">
-                        <?php echo htmlspecialchars_decode($post->content) ?>
+                        <?php if (isset($post) && $post->content) {
+                             echo htmlspecialchars_decode($post->content);
+                        } ?>
                     </div>
 
                     <input type="hidden" name="content" id="post-content" value="">

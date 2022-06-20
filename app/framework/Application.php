@@ -54,12 +54,9 @@ class Application
 				$this->config['controller'] = $controller;
 				$controllerReflection = new \ReflectionClass($controller);
 				if ($controllerReflection->hasMethod($action)) {
+					$reflectionMethod = new \ReflectionMethod($controller, $action);
 					$args = isset($route['parameters']) ? $route['parameters'] : [];
-					$response = (new $controller)->$action($args);
-
-					// $reflectionMethod = new \ReflectionMethod($controller, $action);
-					// $args = isset($route['parameters']) ? $route['parameters'] : [];
-					// $response = $reflectionMethod->invokeArgs(new $controller, $args);
+					$response = $reflectionMethod->invokeArgs(new $controller, $args);
 
 					if (is_subclass_of($response, 'Framework\Response\ResponseInterface')) {
 						if ($response->type === 'html') {

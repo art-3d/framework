@@ -1,6 +1,6 @@
 <?php
 $activeIfRoute = function ($item) use (&$route) {
-   return $route['_name'] === $item?'class="active"':'';
+   return $route['_name'] === $item ? 'class="active"' : '';
 };
 ?>
 <!DOCTYPE html>
@@ -31,13 +31,14 @@ $activeIfRoute = function ($item) use (&$route) {
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="http://mindk.com"><img class="brand-logo" src="/images/img-logo-mindk-white.png"
-                                                                 alt="Education"></a>
+            <a class="navbar-brand" href="http://mindk.com"><img class="brand-logo" src="/images/img-logo-mindk-white.png" alt="Education"></a>
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
                 <li <?php echo $activeIfRoute('home') ?>><a href="<?php echo $getRoute('home')?>">Home</a></li>
-                <li <?php echo $activeIfRoute('add_post') ?>><a href="<?php echo $getRoute('add_post')?>">Add Post</a></li>
+                <?php if (!is_null($user)) { ?>
+                    <li <?php echo $activeIfRoute('add_post') ?>><a href="<?php echo $getRoute('add_post')?>">Add Post</a></li>
+                <?php } ?>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <?php if (is_null($user)) { ?>
@@ -64,14 +65,14 @@ $activeIfRoute = function ($item) use (&$route) {
 
 <div class="container theme-showcase" role="main">
     <div class="row">
-        <?php foreach($flush as $type=>$msgs) {
-            foreach($msgs as $msg) {?>
+        <?php foreach ($flush as $type=>$msgs) {
+            foreach ($msgs as $msg) {?>
             <div class="alert alert-<?php echo $type==='error'?'danger':$type?> alert-dismissible" role="alert">
                 <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span
                         class="sr-only">Close</span></button>
                 <?php echo $msg; ?>
             </div>
-        <?php } ?>
+            <?php } ?>
         <?php } ?>
 
         <?php echo $content; ?>
@@ -82,8 +83,9 @@ $activeIfRoute = function ($item) use (&$route) {
 <script type="application/javascript" src="/js/bootstrap.min.js"></script>
 <script type="application/javascript" src="/js/jquery.hotkeys.js"></script>
 <script type="application/javascript" src="/js/bootstrap-wysiwyg.js"></script>
+
 <script type="application/javascript">
-    $(document).ready(function () {
+    document.addEventListener('DOMContentLoaded', function () {
         $('#editor').wysiwyg();
         $('#post-form').submit(function (e) {
             $('#post-content').val($('#editor').html());

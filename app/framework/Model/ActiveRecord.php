@@ -14,7 +14,7 @@ abstract class ActiveRecord
 			return self::findAll();
 		}
 
-		$query = "SELECT * FROM `" . static::getTable() . "` WHERE `id`='$id'";
+		$query = sprintf('SELECT * FROM %s WHERE id = %d', static::getTable(), $id); // "SELECT * FROM `" . static::getTable() . "` WHERE `id`='$id'";
 		$pdo = Service::get('pdo');
 		$stmt = $pdo->prepare($query);
 		$stmt->execute();
