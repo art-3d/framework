@@ -2,7 +2,7 @@ version: '3.8'
 services:
   webserver:
     build:
-      context: ./nginx/
+      context: ./docker/nginx/
       dockerfile: Dockerfile
     links:
       - app
@@ -15,7 +15,7 @@ services:
 
   app:
     build:
-      context: ./php/
+      context: ./docker/php/
       dockerfile: Dockerfile
     expose:
       - 9000

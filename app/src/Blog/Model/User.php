@@ -13,12 +13,12 @@ use Framework\Security\Model\UserInterface;
 
 class User extends ActiveRecord implements UserInterface
 {
-    public $id;
+    // public $id;
     public $email;
     public $password;
     public $role;
 
-    public static function getTable()
+    public static function getTable(): string
     {
         return 'users';
     }

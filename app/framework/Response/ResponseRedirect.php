@@ -2,14 +2,9 @@
 
 namespace Framework\Response;
 
-use Framework\DI\Service;
-
 class ResponseRedirect extends Response
 {
-	/**
-	 * @var string type of response.
-	 */
-	public $type = 'redirect';
+	public string $type = 'redirect';
 	/*
 	 * @param string $url.
 	 * @return void.

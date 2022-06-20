@@ -2,26 +2,16 @@
 
 namespace Framework\Validation;
 
-class Validator {
-	/**
-	 * @var object model.
-	 */
-	protected $object;
-	/**
-	 * @var array.
-	 */	
-	protected $errors = [];
-	/**
-	 * @param $obj object model.
-	 * @return void.
-	 */
-	public function __construct($obj) {
+class Validator
+{
+	protected array $errors = [];
+
+	public function __construct(protected object $obj) {
 		$this->object = $obj;
 	}
-	/**
-	 * @return boolean.
-	 */
-	public function isValid() {
+
+	public function isValid(): bool
+	{
 		$rules = $this->object->getRules();
 		foreach($rules as $key => $val) {
 			foreach($val as $filter) {
@@ -32,12 +22,12 @@ class Validator {
 				}
 			}
 		}
+
 		return $error ? false : true;
 	}
-	/**
-	 * @return array.
-	 */
-	public function getErrors() {
+
+	public function getErrors(): array
+	{
 		return $this->errors;
 	}
 }

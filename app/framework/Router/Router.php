@@ -24,7 +24,7 @@ class Router
 				$routePattern = str_replace('{' . $key . '}', $val, $routePattern);
 			}
 		}
-		return 'http://' . $_SERVER['SERVER_NAME'] . $routePattern;
+		return 'http://' . $_SERVER['SERVER_NAME'] . ':8002' . $routePattern;
 	}
 	/**
 	 * Searching of route in routing map by uri.

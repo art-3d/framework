@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: dgilan
- * Date: 10/15/14
- * Time: 3:19 PM
- */
 
 namespace Blog\Controller;
 
@@ -20,6 +14,6 @@ class TestController extends Controller
 
     public function getJsonAction()
     {
-        return new JsonResponse(array('body' => 'Hello World'));
+        return new JsonResponse(json_encode(['body' => 'Hello World']));
     }
 } 

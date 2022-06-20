@@ -6,3 +6,4 @@
 - create migration
 - add new features to framework (cache, logs, etc)
 - ues queue*
+- refactor dependency injection by __construct
