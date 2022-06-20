@@ -5,7 +5,7 @@
 - add project description
 - create migration
 - add new features to framework (cache, logs, etc)
-- ues queue*
+- use queue*
 - refactor dependency injection by __construct
 
 - add db relations (author, article)
