@@ -1,0 +1,48 @@
+version: '3.8'
+services:
+  webserver:
+    build:
+      context: ./nginx/
+      dockerfile: Dockerfile
+    links:
+      - app
+    ports:
+      - 8002:80
+    volumes:
+      - ./app/public:/app/public
+    networks:
+      - app-network
+
+  app:
+    build:
+      context: ./php/
+      dockerfile: Dockerfile
+    expose:
+      - 9000
+    volumes:
+      - ./php/php.ini:/usr/local/etc/php/conf.d/php.ini
+      - ./app:/app
+      - ./php/local.ini:/usr/local/etc/php/conf.d/local.ini
+    networks:
+      - app-network
+
+  db:
+    image: mariadb:${DB_VERSION}
+    restart: unless-stopped
+    environment:
+      - MYSQL_DATABASE=${DB_DATABASE}
+      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
+      - MYSQL_USER=${DB_USER}
+      - MYSQL_PASSWORD=${DB_PASSWORD}
+    volumes:
+      - dbdata:/var/lib/mysql/
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  dbdata:
+    driver: local
