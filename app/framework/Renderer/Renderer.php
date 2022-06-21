@@ -37,12 +37,9 @@ class Renderer
 		$app = Service::get('application');
 		$router = Service::get('router'); 
 		$session = Service::get('session');
-		$main_layout_path = $app->config['main_layout'];
-		if (!$absolute_path) {
-			$view_path = $this->getView($app->config['controller']);
-		} else {
-			$view_path = $view;
-		}
+		$mainLayoutPath = $app->config['main_layout'];
+		$viewPath = $absolute_path ? $view : $this->getView($app->config['controller']);
+
 			# Closures block ******************
 		$getRoute = function($item, $param = []) use (&$router) 
 		{
@@ -72,11 +69,11 @@ class Renderer
 		}
 		ob_start();
 		extract($this->parameters);
-		include($view_path);
+		include($viewPath);
 		$content = ob_get_clean();
 			# Rendering into main template
 		ob_start();
-		include($main_layout_path);
+		include($mainLayoutPath);
 
 		return ob_get_clean();
 	}

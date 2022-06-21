@@ -5,11 +5,8 @@ namespace Framework\Response;
 class ResponseRedirect extends Response
 {
 	public string $type = 'redirect';
-	/*
-	 * @param string $url.
-	 * @return void.
-	 */
-	public function __construct($url)
+
+	public function __construct(string $url)
 	{
 		header('Location: ' . $url);
 	}

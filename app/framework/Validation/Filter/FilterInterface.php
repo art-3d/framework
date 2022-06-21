@@ -4,6 +4,6 @@ namespace Framework\Validation\Filter;
 
 interface FilterInterface
 {
-	public function validate($entity);
-	public function getMessage();
+	public function isValid($entity);
+	public function getMessage(): string;
 }

@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: dgilan
- * Date: 10/16/14
- * Time: 11:36 AM
- */
 
 namespace Blog\Model;
 
@@ -14,10 +8,10 @@ use Framework\Validation\Filter\NotBlank;
 
 class Post extends ActiveRecord
 {
-    public $title;
-    public $content;
-    public $date;
-    public $name;
+    public string $title;
+    public string $content;
+    public \DateTimeImmutable $date;
+    public string $author;
 
     public static function getTable(): string
     {
@@ -26,12 +20,12 @@ class Post extends ActiveRecord
 
     public function getRules()
     {
-        return array(
-            'title'   => array(
+        return [
+            'title'   => [
                 new NotBlank(),
-                new Length(4, 100)
-            ),
-            'content' => array(new NotBlank())
-        );
+                new Length(4, 100),
+            ],
+            'content' => [new NotBlank()],
+        ];
     }
 }

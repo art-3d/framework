@@ -5,6 +5,8 @@ namespace Cms\Controller;
 use Framework\Controller\Controller;
 use Framework\DI\Service;
 use CMS\Model\Profile;
+use Framework\Exception\DatabaseException;
+use Framework\Exception\HttpNotFoundException;
 
 class ProfileController extends Controller
 {
@@ -14,7 +16,7 @@ class ProfileController extends Controller
 			return $this->redirect($this->generateRoute('home'), 'You must be logged');
 		}
 		if ($this->getRequest()->isPost()) {
-			try{
+			try {
 				$request = $this->getRequest();
 				$user = Service::get('session')->get('user');
 				$password = $request->post('password');

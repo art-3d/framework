@@ -8,24 +8,25 @@ use Framework\DI\Service;
 use Framework\Exception\DatabaseException;
 use Framework\Exception\HttpNotFoundException;
 use Framework\Response\Response;
+use Framework\Response\ResponseInterface;
 use Framework\Validation\Validator;
 
 class PostController extends Controller
 {
-    public function indexAction()
+    public function indexAction(): ResponseInterface
     {
         return $this->render('index.html', array('posts' => Post::find('all')));
     }
 
-    public function getPostAction($id)
+    public function getPostAction($id): ResponseInterface
     {
         return new Response('Post: #' . $id);
     }
 
-    public function addAction()
+    public function addAction(): ResponseInterface
     {
         if ($this->getRequest()->isPost()) {
-            try{
+            try {
                 $post          = new Post();
                 $date          = new \DateTime();
                 $post->title   = $this->getRequest()->post('title');
@@ -51,7 +52,7 @@ class PostController extends Controller
         );
     }
 
-    public function showAction($id)
+    public function showAction($id): ResponseInterface
     {
         if (!$post = Post::find((int)$id)) {
             throw new HttpNotFoundException('Page Not Found!');

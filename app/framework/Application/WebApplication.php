@@ -1,46 +1,26 @@
 <?php
 
-namespace Framework;
+namespace Framework\Application;
 
-use Framework\Router\Router;
 use Framework\DI\Service;
-use Framework\Request\Request;
-use Framework\Renderer\Renderer;
 use Framework\Exception\HttpNotFoundException;
-use Framework\Session\Session;
-use Framework\Security\Security;
 use Framework\Response\Response;
 
-class Application
+class WebApplication extends Application
 {
-	public array $config;
-
 	public function __construct(string $configPath)
 	{
 		$this->config = include_once($configPath);
-
-		Service::set('application', $this);
-		Service::set('router', new Router($this->config['routes']));
-		Service::set('request', new Request());
-		Service::set('renderer', new Renderer());
-		Service::set('session', new Session());
-		Service::set('security', new Security());
-
-		Service::set('pdo', new \PDO(
-			$this->config['pdo']['dsn'],
-			$this->config['pdo']['user'],
-			$this->config['pdo']['password'],
-			[\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION, \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC],
-		));
 	}
 
-	public function run()
+	public function run(): void
 	{
-		try{
+		parent::run();
+		try {
 			if ($token = Service::get('request')->post('token')) { 
 				if ($_COOKIE['token'] != $token) {
 					throw new \Exception('Wrong token!');
-				}	
+				}
 			}
 			if ($route = Service::get('router')->find($_SERVER['REQUEST_URI'])) {
 					// check security

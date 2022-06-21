@@ -23,7 +23,7 @@ abstract class ActiveRecord
 	}
 
 	/**
-	 * @return array of objects (all rows).
+	 * @return object[]
 	 */
 	protected static function findAll(): array
 	{
@@ -34,32 +34,26 @@ abstract class ActiveRecord
 
 		return $stmt->fetchAll($pdo::FETCH_CLASS);
 	}
-	/**
-	 * @param string $query query into database.
-	 * @return object result of query.
-	 */
-	public static function select($query)
+
+	public static function select(string $query, array $params = []): object
 	{
 		$pdo = Service::get('pdo');
 		$stmt = $pdo->prepare($query);
-		$stmt->execute();
+		$stmt->execute($params);
 
 		return $stmt->fetchObject();
 	}
 	/**
 	 * @param string $query query into database.
 	 */
-	public static function query($query): void
+	public static function query(string $query): void
 	{
 		$pdo = Service::get('pdo');
 		$stmt = $pdo->prepare($query);
 		$stmt->execute();
 	}
-	/**
-	 * Save all public properties.
-	 * @return void.
-	 */
-	public function save()
+
+	public function save(): void
 	{
 		$names = [];
 		$values = [];
@@ -73,14 +67,15 @@ abstract class ActiveRecord
 
 		$result = Service::get('pdo')->query($query);
 	}
+
 	/**
 	 * @param string $email.
 	 * @return object.
 	 */
 	public static function findByEmail(string $email)
 	{
-		$query = 'SELECT * FROM `' . static::getTable() . '`';
+		$query = 'SELECT * FROM `' . static::getTable() . '` WHERE email = :email';
 
-		return self::select($query);
-	}	
+		return self::select($query, ['email' => $email]);
+	}
 }

@@ -2,8 +2,9 @@
 
 namespace Framework\Security\Model;
 
-interface UserInterface {
+interface UserInterface
+{
 	public static function getTable();
 
-	public function getRole();
+	public function getRole(): string;
 }

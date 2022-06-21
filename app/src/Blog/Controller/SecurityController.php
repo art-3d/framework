@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: dgilan
- * Date: 10/17/14
- * Time: 12:41 PM
- */
 
 namespace Blog\Controller;
 
@@ -12,12 +6,12 @@ use Blog\Model\User;
 use Framework\Controller\Controller;
 use Framework\DI\Service;
 use Framework\Exception\DatabaseException;
+use Framework\Response\ResponseInterface;
 use Framework\Response\ResponseRedirect;
 
 class SecurityController extends Controller
 {
-
-    public function loginAction()
+    public function loginAction(): ResponseInterface
     {
         if (Service::get('security')->isAuthenticated()) {
             return new ResponseRedirect($this->generateRoute('home'));
@@ -42,13 +36,14 @@ class SecurityController extends Controller
         return $this->render('login.html', array('errors' => $errors));
     }
 
-    public function logoutAction()
+    public function logoutAction(): ResponseInterface
     {
         Service::get('security')->clear();
+
         return $this->redirect($this->generateRoute('home'));
     }
 
-    public function signinAction()
+    public function signinAction(): ResponseInterface
     {
         if (Service::get('security')->isAuthenticated()) {
             return new ResponseRedirect($this->generateRoute('home'));
@@ -56,7 +51,7 @@ class SecurityController extends Controller
         $errors = [];
 
         if ($this->getRequest()->isPost()) {
-            try{
+            try {
                 $user           = new User();
                 $user->email    = $this->getRequest()->post('email');
                 $user->password = md5($this->getRequest()->post('password'));

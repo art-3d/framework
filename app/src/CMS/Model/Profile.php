@@ -3,21 +3,24 @@
 namespace CMS\Model;
 
 use Framework\Model\ActiveRecord;
-use Framework\Security\Model\UserInterface;
 
 class Profile extends ActiveRecord
 {
-    public $email;
-    public $password;
+    public string $email;
+    public string $password;
 
-    public static function getTable()
+    public static function getTable(): string
     {
         return 'users';
     }
 
-	public function updateProfile()
+	public function updateProfile(): void
 	{
-		$query = "UPDATE `" . $this->getTable() . "` SET `password`='" . $this->password . "' WHERE `email`='" . $this->email . "'";
-		$this->query($query);
+        $query = sprintf('UPDATE %s SET password = :password WHERE email = :email', self::getTable());
+
+        $this->query($query, [
+            'password' => $this->password,
+            'email' => $this->email,
+        ]);
 	}
 }

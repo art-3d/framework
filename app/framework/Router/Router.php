@@ -11,12 +11,8 @@ class Router
 	public function __construct(private array $map)
 	{
 	}
-	/**
-	 * @param string $name name of route.
-	 * @param array $params parameters of route.
-	 * @return string route.
-	 */
-	public function buildRoute($name, $params = [])
+
+	public function buildRoute(string $name, array $params = []): string
 	{
 		$routePattern = $this->map[$name]['pattern'];
 		if (!empty($params)) {
@@ -24,14 +20,11 @@ class Router
 				$routePattern = str_replace('{' . $key . '}', $val, $routePattern);
 			}
 		}
+
 		return 'http://' . $_SERVER['SERVER_NAME'] . ':8002' . $routePattern;
 	}
-	/**
-	 * Searching of route in routing map by uri.
-	 * @param string $uri.
-	 * @return array match route.
-	 */
-	public function find($uri)
+
+	public function find(string $uri): ?array
 	{
 		$match_route = null;
 		if (!empty($this->map)) {
@@ -68,6 +61,7 @@ class Router
 				}
 			}
 		}
+
 		return $this->route = $match_route;
 	}
 
@@ -75,12 +69,8 @@ class Router
 	{
 		return $this->route;
 	}
-	/**
-	 * @param string pattern.
-	 * @param array.
-	 * @return string regular expressions.
-	 */
-	protected function patternToRegexp($pattern, $requirement = [])
+
+	protected function patternToRegexp(string $pattern, array $requirement = []): string
 	{
 		if (!empty($requirement)) {
 			foreach($requirement as $key => $val) {

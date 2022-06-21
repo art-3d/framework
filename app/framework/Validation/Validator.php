@@ -6,7 +6,8 @@ class Validator
 {
 	protected array $errors = [];
 
-	public function __construct(protected object $obj) {
+	public function __construct(protected object $obj)
+	{
 		$this->object = $obj;
 	}
 
@@ -16,7 +17,7 @@ class Validator
 		$rules = $this->object->getRules();
 		foreach($rules as $key => $val) {
 			foreach($val as $filter) {
-				if (!$filter->validate($this->object->$key)) {
+				if (!$filter->isValid($this->object->$key)) {
 					$msg = $filter->getMessage();
 					$this->errors[$key] = $msg;
 					$isValid = false;

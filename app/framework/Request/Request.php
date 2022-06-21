@@ -2,68 +2,43 @@
 
 namespace Framework\Request;
 
-use Framework\DI\Service;
-
 class Request
 {	
-	/**
-	 * @return string.
-	 */
-	public function getHost()
+	public function getHost(): string
 	{
 		return $_SERVER['HTTP_HOST'];
 	}
-	/**
-	 * @return string.
-	 */	
-	public function getURI()
+
+	public function getURI(): string
 	{
 		return $_SERVER['REQUEST_URI'];
 	}
 
-	/**
-	 * @return string.
-	 */
-	public function getMethod()
+	public function getMethod(): string
 	{
 		return $_SERVER['REQUEST_METHOD'];
 	}
 
-	/**
-	 * @return boolean.
-	 */
-	public function isPost()
+	public function isPost(): bool
 	{
 		return $this->getMethod() === 'POST';
 	}
 
-	/**
-	 * Getter, from $_POST.
-	 * @param string $varname.
-	 * @return string.
-	 */
-	public function post($varname)
+	public function post(string $name): ?string
 	{
-		return isset($_POST[$varname]) ? $this->filter($_POST[$varname]) : null;
+		return isset($_POST[$name]) ? $this->filter($_POST[$name]) : null;
 	}
-	/**
-	 * Getter, from $_GET.
-	 * @param string $varname.
-	 * @return string.
-	 */
-	public function get($varname)
+
+	public function get(string $name): ?string
 	{
-		return isset($_GET[$varname]) ? $this->filter($_GET[$varname]) : null;
+		return isset($_GET[$name]) ? $this->filter($_GET[$name]) : null;
 	}
-	/**
-	 * @param string $var.
-	 * @return string.
-	 */
-	private function filter($var)
+
+	private function filter(string $var): string
 	{
 		$var = trim($var);
 		$var = strip_tags($var);
-		$var = htmlentities($var, ENT_QUOTES, "UTF-8");
+		$var = htmlentities($var, ENT_QUOTES, 'UTF-8');
 		$var = htmlspecialchars($var, ENT_QUOTES);
 
 		return $var;

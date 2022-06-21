@@ -2,16 +2,12 @@
 
 namespace Framework\Validation\Filter;
 
-abstract class Filter{
-  /**
-   * @var string.
-   */
-   protected $message;
+abstract class Filter
+{
+    protected string $message;
 
-  /**
-   * @return string.
-   */
-  public function getMessage() {
-	return $this->message ? $this->message : null;
-  }
+    public function getMessage(): string
+    {
+        return $this->message;
+    }
 }

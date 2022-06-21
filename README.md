@@ -1,5 +1,13 @@
+# Education, framework
 
-#todo
+## Purpose of the project
+### > is to learn how frameworks work under the hood
+### > walk from start to end of request -> response process
+### > cover diferent parts of basic components
+
+</br>
+
+## todo:
 - fix all features
 - add unit tests
 - add project description
@@ -10,3 +18,7 @@
 
 - add db relations (author, article)
 - add comments
+- fixtures
+- explain structure of the project
+- CSRF token for forms
+- add pipeline for static analysis tool, disable push to master (PR only)

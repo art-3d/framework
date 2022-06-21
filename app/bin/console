@@ -1,0 +1,7 @@
+#!/usr/bin/env php
+<?php
+
+require_once(__DIR__ . '/../framework/Loader.php');
+
+$console = new Framework\Application\ConsoleApplication(__DIR__ . '/../app/config/config.php');
+$console->run();
