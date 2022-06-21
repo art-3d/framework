@@ -5,37 +5,28 @@ namespace Framework\Renderer;
 use Framework\DI\Service;
 
 class Renderer
-{	
-	/**
-	 * @var string.
-	 */
-	protected $view;
-	/**
-	 * @var array parameters of the view.
-	 */	
-	protected $parameters;
-	/**
-	 * @param string $controller.
-	 * @return string view path.
-	 */
-	protected function getView($controller) {
+{
+	protected string $view;
+	protected array $parameters;
+
+	protected function getView(string $controller): string
+    {
 		$view_path = preg_replace('/Controller/', 'views', $controller, 1);
 		$view_path = __DIR__ . '/../../src/' . str_replace('Controller', '', $view_path) . '\\' . $this->view . '.php';
-		$view_path = str_replace('\\', '/', $view_path);
 
-		return $view_path;
+		return str_replace('\\', '/', $view_path);
 	}
 	/**
 	 * @param string $view.
 	 * @param array $parameters.
 	 * @return string content of requested view.
 	 */
-	public function render($view, $parameters=[], $absolute_path = false)
-	{	
+	public function render(string $view, array $parameters = [], bool $absolute_path = false): string
+	{
 		$this->view = $view;
 		$this->parameters = $parameters;
 		$app = Service::get('application');
-		$router = Service::get('router'); 
+		$router = Service::get('router');
 		$session = Service::get('session');
 		$mainLayoutPath = $app->config['main_layout'];
 		$viewPath = $absolute_path ? $view : $this->getView($app->config['controller']);

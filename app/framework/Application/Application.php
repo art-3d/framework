@@ -11,7 +11,7 @@ use Framework\Session\Session;
 
 abstract class Application
 {
-    protected array $config;
+    public array $config;
 
     public function __construct(string $configPath)
     {
