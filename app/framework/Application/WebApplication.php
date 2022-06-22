@@ -19,7 +19,6 @@ final class WebApplication extends Application
 	private Renderer $renderer;
 
 	public function __construct(
-		public array $config,
 		private Container $container,
 	) {
 		$container->add(self::class, $this);
@@ -46,7 +45,6 @@ final class WebApplication extends Application
 				}
 				$controllerClass = $route['controller'];
 				$action = $route['action'] . 'Action';
-				// $this->config['controller'] = $controllerClass;
 				$this->controllerClass = $controllerClass;
 
 				$controller = $this->container->build($controllerClass);

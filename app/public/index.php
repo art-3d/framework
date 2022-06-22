@@ -7,11 +7,10 @@ require_once(_ROOT . '/framework/Loader.php');
 Loader::addNamespacePath('Blog\\', __DIR__ . '/../src/Blog');
 Loader::addNamespacePath('CMS\\', __DIR__ . '/../src/CMS');
 
-$config = require_once(_ROOT . '/app/config/config.php');
+$services = require_once(_ROOT . '/app/config/services.php');
 
 $app = new Framework\Application\WebApplication(
-    $config,
-    new Framework\DI\Container($config['services'])
+    new Framework\DI\Container($services)
 );
 
 $app->run();

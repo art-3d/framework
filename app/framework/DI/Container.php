@@ -58,11 +58,6 @@ class Container
         $parameters = $constructor->getParameters();
         $dependencies = [];
         foreach ($parameters as $parameter) {
-            // if ($parameter->name === 'container') {
-            //     $dependencies[] = $this;
-            //     continue;
-            // }
-
             $dependencies[] = isset($this->services[$parameter->name])
                 ? $this->services[$parameter->name]
                 : $this->build($parameter->getType()->getName());
