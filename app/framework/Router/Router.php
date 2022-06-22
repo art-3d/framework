@@ -45,16 +45,17 @@ class Router
 					$route_pattern = str_replace(['}', '{'], ['', ''], $route['pattern']);
 					$route_explode = explode('/', $route_pattern);
 					$params = [];
-					// for ($i=2; $i < count($uri_explode); $i++) {
-					// 	if (empty($route_explode[$i])) {
-					// 		continue;
-					// 	}
-					// 	if ($uri_explode[$i] === $route_explode[$i]) {
-					// 		$params[$route_explode[$i]] = true;
-					// 	} else {
-					// 		$params[$route_explode[$i]] = $uri_explode[$i];
-					// 	}
-					// }
+					// todo refactor
+					for ($i=2; $i < count($uri_explode); $i++) {
+						if (empty($route_explode[$i])) {
+							continue;
+						}
+						if ($uri_explode[$i] === $route_explode[$i]) {
+							$params[$route_explode[$i]] = true;
+						} else {
+							$params[$route_explode[$i]] = $uri_explode[$i];
+						}
+					}
 					$match_route['parameters'] = $params; // from parsing
 				}
 				break; // no match found

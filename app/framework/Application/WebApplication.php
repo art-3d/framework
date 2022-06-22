@@ -58,26 +58,6 @@ final class WebApplication extends Application
 				} else {
 					throw new HttpNotFoundException('Page Not Found');
 				}
-
-
-				// $controller = $route['controller'];
-				// $action = $route['action'] . 'Action';
-				// $this->config['controller'] = $controller;
-				// $controllerReflection = new \ReflectionClass($controller);
-				// if ($controllerReflection->hasMethod($action)) {
-				// 	$reflectionMethod = new \ReflectionMethod($controller, $action);
-				// 	$args = isset($route['parameters']) ? $route['parameters'] : [];
-				// 	$response = $reflectionMethod->invokeArgs(new $controller, $args);
-
-				// 	if (is_subclass_of($response, 'Framework\Response\ResponseInterface')) {
-				// 		if ($response->type === 'html') {
-				// 			$response->send();
-				// 		}
-				// 	}
-				// } else {
-				// 	// the action is not found
-				// 	throw new HttpNotFoundException('Page Not Found!');
-				// }
 			} else {
 				// the route is not found
 				throw new HttpNotFoundException('Page Not Found!');
