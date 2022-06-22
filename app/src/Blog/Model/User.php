@@ -14,7 +14,7 @@ class User extends ActiveRecord implements UserInterface
     public string $password;
     public string $role;
 
-    public static function getTable(): string
+    public function getTable(): string
     {
         return 'users';
     }

@@ -10,10 +10,10 @@ class Post extends ActiveRecord
 {
     public string $title;
     public string $content;
-    public \DateTimeImmutable $date;
+    public string $date;
     public string $author;
 
-    public static function getTable(): string
+    public function getTable(): string
     {
         return 'posts';
     }

@@ -2,8 +2,13 @@
 
 namespace Framework\Renderer;
 
+use Framework\Application\WebApplication;
 use Framework\DI\Container;
-use Framework\DI\Service;
+use Framework\Controller\Controller;
+use Framework\Request\Request;
+use Framework\Response\ResponseInterface;
+use Framework\Router\Router;
+use Framework\Session\Session;
 
 class Renderer
 {
@@ -11,7 +16,11 @@ class Renderer
 	protected array $parameters;
 
 	public function __construct(
+		private WebApplication $app,
 		private string $mainLayoutPath,
+		private Session $session,
+		private Router $router,
+		private Request $request,
 		private Container $container,
 	) {
 	}
@@ -32,27 +41,19 @@ class Renderer
 	{
 		$this->view = $view;
 		$this->parameters = $parameters;
-		$app = Service::get('application');
-		$router = Service::get('router');
-		$session = Service::get('session');
-		// $mainLayoutPath = $app->config['main_layout'];
-		$viewPath = $absolute_path ? $view : $this->getView($app->config['controller']);
+		$viewPath = $absolute_path ? $view : $this->getView($this->app->getControllerClass());
 
-			# Closures block ******************
+		# Closures block ******************
+		$action = $this->request->getURI();
 		$getRoute = function($item, $param = []) use (&$router) {
-			return $router->buildRoute($item, $param);
+			return $this->router->buildRoute($item, $param);
 		};
-		$include = function($controller, $action, $params = []): void {
-			// $action .= 'Action';
-			// $ctrl = new $controller;
-			// $refl = new \ReflectionMethod($ctrl, $action);
-			// $response = $refl->invokeArgs($ctrl, $params);
-			// $response->send();
-			
-			
+		$include = function(string $controllerName, string $action, array $params = []): void {
 			$action .= 'Action';
-			$controller = $this->container->make($controller);
-			$response = $controller->$action($params);
+			/** @var Controller $controller */
+			$controller = $this->container->build($controllerName);
+			/** @var ResponseInterface $response */
+			$response = $controller->$action(...$params);
 			$response->send();
 		};
 		$generateToken = function(): void {
@@ -61,10 +62,11 @@ class Renderer
 			echo '<input type="hidden" name="token" value="' . $token . '" />'; 
 		};
 			# End closures block **************
-		$route = Service::get('router')->getRoute(); // array
-		$user = Service::get('session')->get('user'); // object
-		if ($flush = $session->get('message')) {
-			$session->delete('message');
+		$route = $this->router->getRoute(); // array
+		$user = $this->session->getUser();
+
+		if ($flush = $this->session->get('message')) {
+			$this->session->delete('message');
 		} else {
 			$flush = [];
 		}

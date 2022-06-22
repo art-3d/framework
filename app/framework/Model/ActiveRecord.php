@@ -2,21 +2,27 @@
 
 namespace Framework\Model;
 
-use Framework\DI\Service;
+use Framework\DataBase\Connection;
 
 abstract class ActiveRecord
 {
-	abstract public static function getTable(): string;
+	private \PDO $pdo;
 
-	public static function find(string|int $id): array|object|null
+	public function __construct(Connection $connection)
+	{
+		$this->pdo = $connection->pdo();
+	}
+
+	abstract public function getTable(): string;
+
+	public function find(string|int $id): array|object|null
 	{
 		if ($id === 'all') {
-			return self::findAll();
+			return $this->findAll();
 		}
 
-		$query = sprintf('SELECT * FROM %s WHERE id = %d', static::getTable(), $id); // "SELECT * FROM `" . static::getTable() . "` WHERE `id`='$id'";
-		$pdo = Service::get('pdo');
-		$stmt = $pdo->prepare($query);
+		$query = sprintf('SELECT * FROM %s WHERE id = %d', static::getTable(), $id);
+		$stmt = $this->pdo->prepare($query);
 		$stmt->execute();
 
 		return $stmt->fetchObject();
@@ -25,32 +31,27 @@ abstract class ActiveRecord
 	/**
 	 * @return object[]
 	 */
-	protected static function findAll(): array
+	protected function findAll(): array
 	{
-		$pdo = Service::get('pdo');
 		$query = "SELECT * FROM `" . static::getTable() . "`";
-		$stmt = $pdo->prepare($query);
+		$stmt = $this->pdo->prepare($query);
 		$stmt->execute();
 
-		return $stmt->fetchAll($pdo::FETCH_CLASS);
+		return $stmt->fetchAll($this->pdo::FETCH_CLASS);
 	}
 
-	public static function select(string $query, array $params = []): object
+	public function select(string $query, array $params = []): object
 	{
-		$pdo = Service::get('pdo');
-		$stmt = $pdo->prepare($query);
+		$stmt = $this->pdo->prepare($query);
 		$stmt->execute($params);
 
 		return $stmt->fetchObject();
 	}
-	/**
-	 * @param string $query query into database.
-	 */
-	public static function query(string $query): void
+
+	public function query(string $query, array $params = []): void
 	{
-		$pdo = Service::get('pdo');
-		$stmt = $pdo->prepare($query);
-		$stmt->execute();
+		$stmt = $this->pdo->prepare($query);
+		$stmt->execute($params);
 	}
 
 	public function save(): void
@@ -58,6 +59,8 @@ abstract class ActiveRecord
 		$names = [];
 		$values = [];
 		foreach (get_object_vars($this) as $name => $value) {
+			if ($name === 'pdo') { continue; }
+
 			$names[] = $name;
 			$values[] = $value;
 		}
@@ -65,17 +68,13 @@ abstract class ActiveRecord
 		$values = "( '" . implode("', '", $values) . "' )";
 		$query = 'INSERT INTO `' . $this->getTable() . '` ' . $names . ' VALUES ' . $values;
 
-		$result = Service::get('pdo')->query($query);
+		$result = $this->pdo->query($query);
 	}
 
-	/**
-	 * @param string $email.
-	 * @return object.
-	 */
-	public static function findByEmail(string $email)
+	public function findByEmail(string $email): object
 	{
 		$query = 'SELECT * FROM `' . static::getTable() . '` WHERE email = :email';
 
-		return self::select($query, ['email' => $email]);
+		return $this->select($query, ['email' => $email]);
 	}
 }

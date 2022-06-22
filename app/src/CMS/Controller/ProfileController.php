@@ -7,17 +7,9 @@ use CMS\Model\Profile;
 use Framework\Exception\DatabaseException;
 use Framework\Exception\HttpNotFoundException;
 use Framework\Response\ResponseInterface;
-use Framework\Security\Security;
-use Framework\Session\Session;
 
 class ProfileController extends Controller
 {
-	public function __construct(
-		private Session $session,
-		private Security $security,
-	) {
-	}
-
 	public function updateAction(): ResponseInterface
 	{
 		if (!$this->security->isAuthenticated()) {
@@ -26,12 +18,12 @@ class ProfileController extends Controller
 		if ($this->getRequest()->isPost()) {
 			try {
 				$request = $this->getRequest();
-				$user = $this->session->get('user');
+				$user = $this->session->getUser();
 				$password = $request->post('password');
 				$pswd_new = $request->post('password_new');
 				$pswd_new_copy = $request->post('password_new_copy');
-				if (md5($password) === $user->password && $pswd_new === $pswd_new_copy && $user->password != md5($pswd_new)) {
-					$profile = new Profile;
+				if (md5($password) === $user->password && $pswd_new === $pswd_new_copy && $user->password !== md5($pswd_new)) {
+					$profile = new Profile($this->connection);
 					$profile->email = $user->email;
 					$profile->password = md5($pswd_new);
 					$profile->updateProfile();
@@ -45,10 +37,10 @@ class ProfileController extends Controller
 				$error = $e->getMessage();
 			}
 		}
-        if (!$profile = $this->session->get('user')) {
+        if (!$profile = $this->session->getUser()) {
             throw new HttpNotFoundException('Profile is not found!');
         }
 	
-		return $this->render('update.html', array('profile' => $profile));
+		return $this->render('update.html', ['profile' => $profile]);
 	}	
 }

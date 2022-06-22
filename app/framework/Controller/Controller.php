@@ -2,37 +2,43 @@
 
 namespace Framework\Controller;
 
+use Framework\DataBase\Connection;
 use Framework\Response\ResponseRedirect;
 use Framework\Response\Response;
-use Framework\DI\Service;
 use Framework\Renderer\Renderer;
 use Framework\Request\Request;
 use Framework\Response\ResponseInterface;
+use Framework\Router\Router;
+use Framework\Security\Security;
+use Framework\Session\Session;
 
 abstract class Controller
 {	
-	public function __construct(protected Renderer $renderer)
-	{
+	public function __construct(
+		protected Renderer $renderer,
+		protected Request $request,
+		protected Session $session,
+		protected Router $router,
+		protected Security $security,
+		protected Connection $connection,
+	) {
 	}
 
 	public function render(string $view, array $params = []): ResponseInterface
 	{
-		// $renderer = Service::get('renderer');
-
 		return new Response($this->renderer->render($view, $params));
 	}
 
 	public function getRequest(): Request
 	{
-		return Service::get('request');
+		return $this->request;
 	}
 
 	public function redirect(string $url, string $message = null): ResponseInterface
 	{
-		$session = Service::get('session');
-		$session->returnURI = Service::get('request')->getURI();
+		$this->session->returnURI = $this->request->getURI();
 		if (!empty($message)) {
-			$session->set('message', ['info' => [$message]]);
+			$this->session->set('message', json_encode(['info' => [$message]]));
 		}
 
 		return new ResponseRedirect($url);
@@ -40,6 +46,6 @@ abstract class Controller
 
 	public function generateRoute(string $name, array $parameters = []): string
 	{
-		return Service::get('router')->buildRoute($name, $parameters);
+		return $this->router->buildRoute($name, $parameters);
 	}
 }

@@ -3,38 +3,51 @@
 namespace Framework\Application;
 
 use Framework\DI\Container;
-use Framework\DI\Service;
 use Framework\Exception\HttpNotFoundException;
 use Framework\Renderer\Renderer;
+use Framework\Request\Request;
 use Framework\Response\Response;
+use Framework\Router\Router;
+use Framework\Security\Security;
 
 final class WebApplication extends Application
 {
+	private string $controllerClass;
+	private Request $request;
+	private Router $router;
+	private Security $security;
+	private Renderer $renderer;
+
 	public function __construct(
 		public array $config,
 		private Container $container,
 	) {
+		$container->add(self::class, $this);
+		$this->request = $container->build(Request::class);
+		$this->router = $container->build(Router::class);
+		$this->security = $container->build(Security::class);
+		$this->renderer = $container->build(Renderer::class);
 	}
 
 	public function run(): void
 	{
-		parent::run();
 		try {
-			if ($token = Service::get('request')->post('token')) { 
-				if ($_COOKIE['token'] != $token) {
+			if ($token = $this->request->post('token')) {
+				if ($_COOKIE['token'] !== $token) {
 					throw new \Exception('Wrong token!');
 				}
 			}
-			if ($route = Service::get('router')->find($_SERVER['REQUEST_URI'])) {
+			if ($route = $this->router->find($_SERVER['REQUEST_URI'])) {
 					// check security
 				if (isset($route['security'])) {
-					if (!Service::get('security')->isAuthenticated()) {
+					if (!$this->security->isAuthenticated()) {
 						throw new \Exception('You don\'t have permission to access on this server');
 					}
 				}
 				$controllerClass = $route['controller'];
 				$action = $route['action'] . 'Action';
-				$this->config['controller'] = $controllerClass;
+				// $this->config['controller'] = $controllerClass;
+				$this->controllerClass = $controllerClass;
 
 				$controller = $this->container->build($controllerClass);
 				if (method_exists($controller, $action)) {
@@ -73,10 +86,14 @@ final class WebApplication extends Application
 			$errors = ['message' => $e->getMessage(), 'code' => $e->getCode()];
 			$path_500 = str_replace('\\', '/', __DIR__ . '/../../src/Blog/views/500.html.php');
 			$response = new Response(
-				$this->container->make(Renderer::class)->render($path_500, $errors, true)
-				// Service::get('renderer')->render($path_500, $errors, true)
+				$this->renderer->render($path_500, $errors, true)
 			);
 			$response->send();
 		}
-	}	
+	}
+
+	public function getControllerClass(): string
+	{
+		return $this->controllerClass;
+	}
 }

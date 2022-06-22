@@ -2,19 +2,21 @@
 
 namespace Framework\Router;
 
-use Framework\DI\Service;
+use Framework\Request\Request;
 
 class Router
 {
 	protected array $route = [];
 
-	public function __construct(private array $map)
-	{
+	public function __construct(
+		private array $routeMap,
+		private Request $request,
+	) {
 	}
 
 	public function buildRoute(string $name, array $params = []): string
 	{
-		$routePattern = $this->map[$name]['pattern'];
+		$routePattern = $this->routeMap[$name]['pattern'];
 		if (!empty($params)) {
 			foreach ($params as $key => $val) {
 				$routePattern = str_replace('{' . $key . '}', $val, $routePattern);
@@ -27,12 +29,12 @@ class Router
 	public function find(string $uri): ?array
 	{
 		$match_route = null;
-		foreach ($this->map as $name => $route) {
+		foreach ($this->routeMap as $name => $route) {
 			$requirements = isset($route['_requirements']) ? $route['_requirements'] : [];
 			$pattern = $this->patternToRegexp($route['pattern'], $requirements);
 			if (preg_match($pattern, $uri)) {
 					# check METHOD
-				if (isset($requirements['_method']) && $requirements['_method'] != Service::get('request')->getMethod()) {
+				if (isset($requirements['_method']) && $requirements['_method'] !== $this->request->getMethod()) {
 					//throw new HttpNotFoundException('Need ' . $requirements['_method'] . ' method!');
 				}
 				$match_route = $route;
@@ -43,17 +45,16 @@ class Router
 					$route_pattern = str_replace(['}', '{'], ['', ''], $route['pattern']);
 					$route_explode = explode('/', $route_pattern);
 					$params = [];
-					for($i=2;$i<count($uri_explode);$i++) {
-						if (empty($route_explode[$i])) {
-							continue;
-						}
-						if ($uri_explode[$i] === $route_explode[$i]) {
-							$params[$route_explode[$i]] = true;
-						}
-						else{
-							$params[$route_explode[$i]] = $uri_explode[$i];
-						}
-					}
+					// for ($i=2; $i < count($uri_explode); $i++) {
+					// 	if (empty($route_explode[$i])) {
+					// 		continue;
+					// 	}
+					// 	if ($uri_explode[$i] === $route_explode[$i]) {
+					// 		$params[$route_explode[$i]] = true;
+					// 	} else {
+					// 		$params[$route_explode[$i]] = $uri_explode[$i];
+					// 	}
+					// }
 					$match_route['parameters'] = $params; // from parsing
 				}
 				break; // no match found

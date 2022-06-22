@@ -44,6 +44,7 @@ class Loader
 		}
 
 		if (!$loadStatus) {
+			$x = 321;
 			throw new Exception(sprintf('Class \'%s\' not found in %s', $className, $classPath));
 		}
 	}

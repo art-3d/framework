@@ -9,7 +9,7 @@ class Profile extends ActiveRecord
     public string $email;
     public string $password;
 
-    public static function getTable(): string
+    public function getTable(): string
     {
         return 'users';
     }

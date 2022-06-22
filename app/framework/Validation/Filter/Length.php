@@ -13,7 +13,7 @@ class Length extends Filter implements FilterInterface
     public function isValid($entity): bool
     {
         $strlen = strlen($entity);
-        if ($strlen < $this->minLength || $strlen > $this->maxLength) {
+        if ($strlen < $this->min || $strlen > $this->max) {
             $this->message = 'Wrong length';
 
             return false;

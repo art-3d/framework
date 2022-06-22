@@ -23,6 +23,7 @@
 - CSRF token for forms
 - add pipeline for static analysis tool, disable push to master (PR only)
 - use .env for config
+- EventDispatcher
 
 <br/>
 

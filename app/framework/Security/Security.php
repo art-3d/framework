@@ -2,33 +2,27 @@
 
 namespace Framework\Security;
 
-use Framework\DI\Service;
 use Framework\Security\Model\UserInterface;
+use Framework\Session\Session;
 
-class Security {
-	/**
-	 * Save a user at the session.
-	 */
-	public function setUser(UserInterface $user): void
+class Security
+{
+	public function __construct(private Session $session)
 	{
-		$session = Service::get('session');
-		$session->set('user', $user);
 	}
-	/**
-	 * Delete session array.
-	 */
+
+	public function setUser($user): void
+	{
+		$this->session->set('user', json_encode($user));
+	}
+
 	public function clear(): void
 	{
-		$session = Service::get('session');
-		$session->destroy();
+		$this->session->destroy();
 	}
-	/**
-	 * @return boolean.
-	 */
+
 	public function isAuthenticated(): bool
 	{
-		$session = Service::get('session');
-
-		return $session->get('user') ? true : false;
+		return $this->session->getUser() ? true : false;
 	}
 }

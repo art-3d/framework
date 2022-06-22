@@ -4,7 +4,6 @@ namespace Blog\Controller;
 
 use Blog\Model\Post;
 use Framework\Controller\Controller;
-use Framework\DI\Service;
 use Framework\Exception\DatabaseException;
 use Framework\Exception\HttpNotFoundException;
 use Framework\Response\Response;
@@ -15,25 +14,26 @@ class PostController extends Controller
 {
     public function indexAction(): ResponseInterface
     {
-        return $this->render('index.html', array('posts' => Post::find('all')));
+        return $this->render('index.html', [
+            'posts' => (new Post($this->connection))->find('all'),
+        ]);
     }
 
     public function getPostAction($id): ResponseInterface
     {
-        return new Response('Post: #' . json_encode($id));
-        // return new Response('Post: #' . $id);
+        return new Response('Post: #' . $id);
     }
 
     public function addAction(): ResponseInterface
     {
         if ($this->getRequest()->isPost()) {
             try {
-                $post          = new Post();
+                $post          = new Post($this->connection);
                 $date          = new \DateTime();
                 $post->title   = $this->getRequest()->post('title');
                 $post->content = trim($this->getRequest()->post('content'));
                 $post->date    = $date->format('Y-m-d H:i:s');
-				$post->name    = Service::get('session')->get('user')->email;
+				$post->name    = $this->session->getUser()->email;
 
                 $validator = new Validator($post);
                 if ($validator->isValid()) {
@@ -55,7 +55,7 @@ class PostController extends Controller
 
     public function showAction($id): ResponseInterface
     {
-        if (!$post = Post::find((int)$id)) {
+        if (!$post = (new Post($this->connection))->find((int)$id)) {
             throw new HttpNotFoundException('Page Not Found!');
         }
 

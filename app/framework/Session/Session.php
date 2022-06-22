@@ -10,6 +10,7 @@ class Session
 	{
 		session_start();
 	}
+
 	/**
 	 * @param mixed $value
 	 */
@@ -23,6 +24,13 @@ class Session
 	public function get(string $name)
 	{
 		return isset($_SESSION[$name]) ? $_SESSION[$name] : null;
+	}
+
+	public function getUser(): ?object
+	{
+		$user = $this->get('user');
+
+		return $user ? json_decode((string)$user) : null;
 	}
 
 	public function delete(string $name): void
