@@ -23,3 +23,24 @@
 - CSRF token for forms
 - add pipeline for static analysis tool, disable push to master (PR only)
 - use .env for config
+
+<br/>
+
+### xdebug config
+```json
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Listen for Xdebug",
+            "type": "php",
+            "request": "launch",
+            "port": 9003,
+            "pathMappings": {
+                "/app": "${workspaceFolder}/app"
+            }
+        }
+    ]
+}
+
+```
