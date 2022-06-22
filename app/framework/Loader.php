@@ -29,7 +29,7 @@ class Loader
 			include_once $classPath;
 			$loadStatus = true;
 		} else {
-			foreach(self::$_namespacePath as $namespace => $path) {
+			foreach (self::$_namespacePath as $namespace => $path) {
 				$pattern = '/^' . $namespace.'\.{0,}$/';
 				if (preg_match($pattern, $className)) {
 					$classPath = str_replace($namespace, $path . '/', $className);

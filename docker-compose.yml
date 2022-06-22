@@ -19,6 +19,9 @@ services:
       dockerfile: Dockerfile
     expose:
       - 9000
+    environment:
+      PHP_IDE_CONFIG: 'serverName=localhost'
+      XDEBUG_SESSION: 'VSCODE'
     volumes:
       - ./php/php.ini:/usr/local/etc/php/conf.d/php.ini
       - ./app:/app

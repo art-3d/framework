@@ -2,12 +2,19 @@
 
 namespace Framework\Renderer;
 
+use Framework\DI\Container;
 use Framework\DI\Service;
 
 class Renderer
 {
 	protected string $view;
 	protected array $parameters;
+
+	public function __construct(
+		private string $mainLayoutPath,
+		private Container $container,
+	) {
+	}
 
 	protected function getView(string $controller): string
     {
@@ -28,24 +35,27 @@ class Renderer
 		$app = Service::get('application');
 		$router = Service::get('router');
 		$session = Service::get('session');
-		$mainLayoutPath = $app->config['main_layout'];
+		// $mainLayoutPath = $app->config['main_layout'];
 		$viewPath = $absolute_path ? $view : $this->getView($app->config['controller']);
 
 			# Closures block ******************
-		$getRoute = function($item, $param = []) use (&$router) 
-		{
+		$getRoute = function($item, $param = []) use (&$router) {
 			return $router->buildRoute($item, $param);
 		};
-		$include = function($controller, $action, $params = [])
-		{
+		$include = function($controller, $action, $params = []): void {
+			// $action .= 'Action';
+			// $ctrl = new $controller;
+			// $refl = new \ReflectionMethod($ctrl, $action);
+			// $response = $refl->invokeArgs($ctrl, $params);
+			// $response->send();
+			
+			
 			$action .= 'Action';
-			$ctrl = new $controller;
-			$refl = new \ReflectionMethod($ctrl, $action);
-			$response = $refl->invokeArgs($ctrl, $params);
+			$controller = $this->container->make($controller);
+			$response = $controller->$action($params);
 			$response->send();
 		};
-		$generateToken = function()
-		{
+		$generateToken = function(): void {
 			$token = md5(date('G/i/s'));
 			setcookie('token', $token);
 			echo '<input type="hidden" name="token" value="' . $token . '" />'; 
@@ -64,7 +74,7 @@ class Renderer
 		$content = ob_get_clean();
 			# Rendering into main template
 		ob_start();
-		include($mainLayoutPath);
+		include($this->mainLayoutPath);
 
 		return ob_get_clean();
 	}

@@ -15,8 +15,8 @@ class Validator
 	{
 		$isValid = true;
 		$rules = $this->object->getRules();
-		foreach($rules as $key => $val) {
-			foreach($val as $filter) {
+		foreach ($rules as $key => $val) {
+			foreach ($val as $filter) {
 				if (!$filter->isValid($this->object->$key)) {
 					$msg = $filter->getMessage();
 					$this->errors[$key] = $msg;

@@ -5,16 +5,21 @@ namespace Framework\Controller;
 use Framework\Response\ResponseRedirect;
 use Framework\Response\Response;
 use Framework\DI\Service;
+use Framework\Renderer\Renderer;
 use Framework\Request\Request;
 use Framework\Response\ResponseInterface;
 
 abstract class Controller
 {	
-	public static function render($view, $params = []): ResponseInterface
+	public function __construct(protected Renderer $renderer)
 	{
-		$renderer = Service::get('renderer');
+	}
 
-		return new Response($renderer->render($view, $params));
+	public function render(string $view, array $params = []): ResponseInterface
+	{
+		// $renderer = Service::get('renderer');
+
+		return new Response($this->renderer->render($view, $params));
 	}
 
 	public function getRequest(): Request

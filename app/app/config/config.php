@@ -15,4 +15,5 @@ return [
         'login_route' => 'login'
     ],
     'commands' => include('commands.php'),
+    'services' => include('services.php'),
 ];

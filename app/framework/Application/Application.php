@@ -11,11 +11,8 @@ use Framework\Session\Session;
 
 abstract class Application
 {
-    public array $config;
-
-    public function __construct(string $configPath)
+    public function __construct(public array $config)
     {
-        $this->config = include_once($configPath);
     }
 
     protected function run(): void
@@ -23,7 +20,7 @@ abstract class Application
 		Service::set('application', $this);
 		Service::set('router', new Router($this->config['routes']));
 		Service::set('request', new Request());
-		Service::set('renderer', new Renderer());
+		// Service::set('renderer', new Renderer());
 		Service::set('session', new Session());
 		Service::set('security', new Security());
 

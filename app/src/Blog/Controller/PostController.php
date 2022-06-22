@@ -20,7 +20,8 @@ class PostController extends Controller
 
     public function getPostAction($id): ResponseInterface
     {
-        return new Response('Post: #' . $id);
+        return new Response('Post: #' . json_encode($id));
+        // return new Response('Post: #' . $id);
     }
 
     public function addAction(): ResponseInterface
