@@ -26,7 +26,14 @@
 
 <br/>
 
-### xdebug config
+### [Xdebug]
+#### Find host:
+```
+$ ipconfig getifaddr en0 #mac
+$ hostname -I | cut -d ' ' -f1 #linux
+```
+
+#### Config:
 ```json
 {
     "version": "0.2.0",
