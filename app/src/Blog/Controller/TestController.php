@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Blog\Controller;
 
 use Framework\Controller\Controller;
@@ -10,7 +12,7 @@ class TestController extends Controller
 {
     public function redirectAction(): ResponseInterface
     {
-        return $this->redirect('/');
+        return $this->redirect('/', 'You were redirected to home page');
     }
 
     public function getJsonAction(): ResponseInterface

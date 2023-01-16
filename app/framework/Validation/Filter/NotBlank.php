@@ -1,8 +1,8 @@
 <?php
 
-namespace Framework\Validation\Filter;
+declare(strict_types=1);
 
-use Framework\Validation\Filter\Filter;
+namespace Framework\Validation\Filter;
 
 class NotBlank extends Filter implements FilterInterface
 {

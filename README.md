@@ -24,6 +24,7 @@
 - add pipeline for static analysis tool, disable push to master (PR only)
 - use .env for config
 - EventDispatcher
+- handle 404, 5xx error
 
 <br/>
 

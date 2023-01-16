@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Blog\Controller;
 
 use Blog\Model\User;
@@ -18,16 +20,15 @@ class SecurityController extends Controller
         $errors = [];
 
         if ($this->getRequest()->isPost()) {
-
             if ($user = (new User($this->connection))->findByEmail($this->getRequest()->post('email'))) {
                 if ($user->password === md5($this->getRequest()->post('password'))) {
                     $this->security->setUser($user);
-                    // $returnUrl = $this->session->returnUrl;
-                    // unset($this->session->returnUrl);
+                    $returnUrl = $this->session->returnUrl;
+                    unset($this->session->returnUrl);
 
-					return $this->redirect(
-                        $this->generateRoute('home')
-                        // $returnUrl ?? $this->generateRoute('home')
+                    return $this->redirect(
+                        // $this->generateRoute('home')
+                        $returnUrl ?? $this->generateRoute('home')
                     );
                 }
             }
@@ -45,7 +46,7 @@ class SecurityController extends Controller
         return $this->redirect($this->generateRoute('home'));
     }
 
-    public function signinAction(): ResponseInterface
+    public function registerAction(): ResponseInterface
     {
         if ($this->security->isAuthenticated()) {
             return new ResponseRedirect($this->generateRoute('home'));
@@ -54,17 +55,20 @@ class SecurityController extends Controller
 
         if ($this->getRequest()->isPost()) {
             try {
-                $user           = new User($this->connection);
-                $user->email    = $this->getRequest()->post('email');
+                $user = new User($this->connection);
+                $user->email = $this->getRequest()->post('email');
                 $user->password = md5($this->getRequest()->post('password'));
-                $user->role     = 'ROLE_USER';
+                $user->role = 'ROLE_USER';
                 $user->save();
+
+                $this->session->writeInfo('You are succesfully registered. Now you can login.');
+
                 return $this->redirect($this->generateRoute('home'));
             } catch (DatabaseException $e) {
                 $errors = [$e->getMessage()];
             }
         }
 
-        return $this->render('signin.html', ['errors' => $errors]);
+        return $this->render('register.html', ['errors' => $errors]);
     }
 }

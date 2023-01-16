@@ -4,8 +4,8 @@
         $errors = [];
     } ?>
 
-    <form class="form-signin" role="form" method="post" action="<?php echo $getRoute('login')?>">
-        <h2 class="form-signin-heading">Please login in</h2>
+    <form class="form-register" role="form" method="post" action="<?php echo $getRoute('login')?>">
+        <h2 class="form-register-heading">Please login in</h2>
         <?php  foreach ($errors as $error) {  ?>
             <div class="alert alert-danger alert-dismissible" role="alert">
                 <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>

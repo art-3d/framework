@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CMS\Model;
 
 use Framework\Model\ActiveRecord;
@@ -14,13 +16,13 @@ class Profile extends ActiveRecord
         return 'users';
     }
 
-	public function updateProfile(): void
-	{
+    public function updateProfile(): void
+    {
         $query = sprintf('UPDATE %s SET password = :password WHERE email = :email', self::getTable());
 
         $this->query($query, [
             'password' => $this->password,
             'email' => $this->email,
         ]);
-	}
+    }
 }

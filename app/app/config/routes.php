@@ -16,10 +16,10 @@ return [
         'controller' => 'Blog\\Controller\\TestController',
         'action'     => 'getJson',
     ],
-    'signin'         => [
-        'pattern'    => '/signin',
+    'registration'         => [
+        'pattern'    => '/register',
         'controller' => 'Blog\\Controller\\SecurityController',
-        'action'     => 'signin'
+        'action'     => 'register'
     ],
     'login'          => [
         'pattern'    => '/login',

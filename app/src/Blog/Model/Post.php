@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Blog\Model;
 
 use Framework\Model\ActiveRecord;
@@ -12,6 +14,7 @@ class Post extends ActiveRecord
     public string $content;
     public string $date;
     public string $author;
+    public string $name;
 
     public function getTable(): string
     {
@@ -21,7 +24,7 @@ class Post extends ActiveRecord
     public function getRules()
     {
         return [
-            'title'   => [
+            'title' => [
                 new NotBlank(),
                 new Length(4, 100),
             ],

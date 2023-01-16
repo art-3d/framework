@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Blog\Model;
 
 use Framework\Model\ActiveRecord;
@@ -27,7 +29,7 @@ class User extends ActiveRecord implements UserInterface
     public function getRules()
     {
         return [
-            'email'   => [
+            'email' => [
                 new NotBlank(),
                 new Length(5, 100),
             ],

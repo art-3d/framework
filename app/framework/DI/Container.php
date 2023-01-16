@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Framework\DI;
 
 class Container
@@ -35,7 +37,7 @@ class Container
         return $this->bind[$abstract];
     }
 
-    //It is equivalent to the previous make method
+    // It is equivalent to the previous make method
     public function build(string $abstract): object
     {
         if (isset($this->container[$abstract])) {
