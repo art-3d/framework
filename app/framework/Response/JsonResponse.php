@@ -7,17 +7,10 @@ namespace Framework\Response;
 class JsonResponse extends Response
 {
     public string $type = 'json';
-    public string $msg = '';
 
-    public function __construct(string $content)
+    public function __construct(private array $data)
     {
-        parent::__construct($content);
-        // $this->content = $content;
-        $this->setHeader('HTTP/1.1 '.$this->code.' '.$this->msg);
+        parent::__construct(json_encode($data));
         $this->setHeader('Content-Type: application/json');
-        header(implode("\n", $this->headers));
-        echo json_encode($this->getContent());
-
-        exit;
     }
 }

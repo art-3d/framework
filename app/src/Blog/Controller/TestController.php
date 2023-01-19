@@ -17,6 +17,6 @@ class TestController extends Controller
 
     public function getJsonAction(): ResponseInterface
     {
-        return new JsonResponse(json_encode(['body' => 'Hello World']));
+        return new JsonResponse(['body' => 'Hello World']);
     }
 }

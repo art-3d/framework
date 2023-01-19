@@ -24,7 +24,7 @@ class Loader
 	public function load(string $className): void
 	{
 		$loadStatus = false;
-		$classPath = '../' . lcfirst(str_replace('\\', '/', $className)) . '.php';
+		$classPath = _ROOT . '/' . lcfirst(str_replace('\\', '/', $className)) . '.php';
 		if (file_exists($classPath)) {
 			include_once $classPath;
 			$loadStatus = true;

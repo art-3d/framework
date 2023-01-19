@@ -9,20 +9,13 @@ class Container
     protected array $bind = [];
     private array $container = [];
 
-    public function __construct(private array $services)
-    {
-        $this->add(self::class, $this);
-    }
+    public function __construct(private array $services) {}
 
     public function add(string $abstract, object $object): void
     {
         $this->container[$abstract] = $object;
     }
 
-    /**
-     *@ param string $abstract class ID, interface
-     *@ param string $concrete class to bind
-     */
     public function bind(string $abstract, string $concrete): void
     {
         $this->bind[$abstract] = $this->build($concrete);
@@ -60,6 +53,12 @@ class Container
         $parameters = $constructor->getParameters();
         $dependencies = [];
         foreach ($parameters as $parameter) {
+            if ($parameter->getType()->getName() === self::class) {
+                $dependencies[] = $this;
+
+                continue;
+            }
+
             $dependencies[] = isset($this->services[$parameter->name])
                 ? $this->services[$parameter->name]
                 : $this->build($parameter->getType()->getName());

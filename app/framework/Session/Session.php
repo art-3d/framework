@@ -6,7 +6,7 @@ namespace Framework\Session;
 
 class Session
 {
-    public string $returnUrl;
+    public ?string $returnUrl = null;
 
     public function __construct()
     {

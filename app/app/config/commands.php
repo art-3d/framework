@@ -1,6 +1,9 @@
 <?php
 
+use Command\GenerateMigrationCommand;
+use Command\MigrateCommand;
+
 return [
-    'migrate' => [
-    ]
+    GenerateMigrationCommand::class,
+    MigrateCommand::class,
 ];

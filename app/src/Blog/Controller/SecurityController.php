@@ -12,6 +12,8 @@ use Framework\Response\ResponseRedirect;
 
 class SecurityController extends Controller
 {
+    private string $salt = '5f4dcc3b5aa765d61d8327deb882cf99';
+
     public function loginAction(): ResponseInterface
     {
         if ($this->security->isAuthenticated()) {
@@ -21,13 +23,12 @@ class SecurityController extends Controller
 
         if ($this->getRequest()->isPost()) {
             if ($user = (new User($this->connection))->findByEmail($this->getRequest()->post('email'))) {
-                if ($user->password === md5($this->getRequest()->post('password'))) {
+                if ($user->password === md5($this->getRequest()->post('password') . '.' . $this->salt)) {
                     $this->security->setUser($user);
                     $returnUrl = $this->session->returnUrl;
                     unset($this->session->returnUrl);
 
                     return $this->redirect(
-                        // $this->generateRoute('home')
                         $returnUrl ?? $this->generateRoute('home')
                     );
                 }
@@ -57,7 +58,7 @@ class SecurityController extends Controller
             try {
                 $user = new User($this->connection);
                 $user->email = $this->getRequest()->post('email');
-                $user->password = md5($this->getRequest()->post('password'));
+                $user->password = md5($this->getRequest()->post('password') . '.' . $this->salt);
                 $user->role = 'ROLE_USER';
                 $user->save();
 

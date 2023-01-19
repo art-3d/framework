@@ -18,10 +18,11 @@ class Response implements ResponseInterface
 
     public function send(): void
     {
-        $this->setHeader('HTTP/1.1 '.$this->code.' '.$this->message);
-        header(implode("\n", $this->headers));
+        header(implode(PHP_EOL, $this->headers));
 
-        echo $this->content;
+        if (isset($this->content)) {
+            echo $this->content;
+        }
     }
 
     public function setHeader(string $header): void

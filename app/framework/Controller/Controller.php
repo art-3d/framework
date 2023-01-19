@@ -42,7 +42,6 @@ abstract class Controller
 
         if (!empty($message)) {
             $this->session->writeInfo($message);
-            // $this->session->set('message', json_encode(['info' => [$message]]));
         }
 
         return new ResponseRedirect($url);

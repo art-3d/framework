@@ -10,6 +10,8 @@ class ResponseRedirect extends Response
 
     public function __construct(string $url)
     {
-        header('Location: '.$url);
+        $this->setHeader('Location: ' . $url);
+
+        parent::__construct('');
     }
 }

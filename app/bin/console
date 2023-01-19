@@ -1,7 +1,15 @@
 #!/usr/bin/env php
 <?php
 
+define('_ROOT', dirname(dirname(__FILE__)));
+
 require_once(__DIR__ . '/../framework/Loader.php');
 
-$console = new Framework\Application\ConsoleApplication(__DIR__ . '/../app/config/config.php');
-$console->run();
+$services = require_once(_ROOT . '/app/config/services.php');
+
+$app = new Framework\Application\ConsoleApplication(
+    new Framework\DI\Container($services),
+    $argv,
+);
+
+$app->run();
