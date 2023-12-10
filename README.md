@@ -25,6 +25,9 @@
 - use .env for config
 - EventDispatcher
 - handle 404, 5xx error
+- add logger
+- add pagination
+- fix psalm warnings
 
 <br/>
 

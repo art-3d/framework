@@ -62,9 +62,9 @@ final class WebApplication extends Application
 			}
 		} catch (\Exception $e ) {
 			$errors = ['message' => $e->getMessage(), 'code' => $e->getCode()];
-			$path_500 = str_replace('\\', '/', __DIR__ . '/../../src/Blog/views/500.html.php');
+			$templatePath = str_replace('\\', '/', __DIR__ . '/../../src/Blog/views/500.html.php');
 			$response = new Response(
-				$this->renderer->render($path_500, $errors, true)
+				$this->renderer->render($path, $errors, true)
 			);
 			$response->send();
 		}

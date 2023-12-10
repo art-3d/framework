@@ -1,0 +1,21 @@
+{
+    "name": "art-3d/framework",
+    "autoload": {
+        "psr-4": {
+            "Framework\\": "../app/framework/",
+            "Blog\\": "../app/src/Blog/",
+            "CMS\\": "../app/src/CMS/",
+            "Command\\": "../app/src/Command/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Artem Mohylenko",
+            "email": "artem.mohylenko@gmail.com"
+        }
+    ],
+    "require-dev": {
+        "ext-simplexml": "*",
+        "vimeo/psalm": "^5.17"
+    }
+}

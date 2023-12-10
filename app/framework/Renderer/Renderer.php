@@ -38,7 +38,7 @@ class Renderer
 
         // Closures block ******************
         $action = $this->request->getURI();
-        $getRoute = function ($item, $param = []) use (&$router) {
+        $getRoute = function ($item, $param = []) {
             return $this->router->buildRoute($item, $param);
         };
         $include = function (string $controllerName, string $action, array $params = []): void {
