@@ -17,4 +17,3 @@
         <?php $include('Blog\\Controller\\PostController', 'getPost', ['id' => 'TestId']) ?>
     </div>
 </div>
-

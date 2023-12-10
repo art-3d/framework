@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Framework\Router;
 
+use Framework\Exception\HttpNotFoundException;
 use Framework\Request\Request;
 
 class Router
@@ -25,7 +26,7 @@ class Router
             }
         }
 
-        return 'http://'.$_SERVER['SERVER_NAME'].':8002'.$routePattern;
+        return 'http://' . $_SERVER['SERVER_NAME'] . ':8002' . $routePattern;
     }
 
     public function find(string $uri): ?array
@@ -37,7 +38,7 @@ class Router
             if (preg_match($pattern, $uri)) {
                 // check METHOD
                 if (isset($requirements['_method']) && $requirements['_method'] !== $this->request->getMethod()) {
-                    // throw new HttpNotFoundException('Need ' . $requirements['_method'] . ' method!');
+                    throw new HttpNotFoundException('Need ' . $requirements['_method'] . ' method!');
                 }
                 $match_route = $route;
                 $match_route['_name'] = $name;

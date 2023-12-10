@@ -15,6 +15,9 @@ return [
         'pattern'    => '/test_json',
         'controller' => 'Blog\\Controller\\TestController',
         'action'     => 'getJson',
+        '_requirements' => [
+            '_method' => 'POST',
+        ],
     ],
     'registration'         => [
         'pattern'    => '/register',
@@ -36,7 +39,7 @@ return [
         'controller'    => 'CMS\\Controller\\ProfileController',
         'action'        => 'update',
         '_requirements' => [
-            '_method' => 'POST'
+            '_method' => 'POST',
         ],
     ],
     'profile'        => [
@@ -55,7 +58,7 @@ return [
         'controller'    => 'Blog\\Controller\\PostController',
         'action'        => 'show',
         '_requirements' => [
-            'id' => '\d+'
+            'id' => '\d+',
         ],
     ],
     'edit_post'      => [

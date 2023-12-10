@@ -40,10 +40,8 @@ final class WebApplication extends Application
 			}
 			if ($route = $this->router->find($_SERVER['REQUEST_URI'])) {
 					// check security
-				if (isset($route['security'])) {
-					if (!$this->security->isAuthenticated()) {
-						throw new \Exception('You don\'t have permission to access on this server');
-					}
+				if (isset($route['security']) && !$this->security->isAuthenticated()) {
+                    throw new \Exception('You don\'t have permission to access on this server');
 				}
 				$controllerClass = $route['controller'];
 				$action = $route['action'] . 'Action';

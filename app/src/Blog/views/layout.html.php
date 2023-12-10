@@ -31,7 +31,7 @@ $activeIfRoute = function ($item) use (&$route) {
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="http://mindk.com"><img class="brand-logo" src="/images/img-logo-mindk-white.png" alt="Education"></a>
+            <a class="navbar-brand" href="https://learn.mindk.com" target="_blank"><img class="brand-logo" src="/images/img-logo-mindk-white.png" alt="Education"></a>
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">

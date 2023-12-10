@@ -12,14 +12,14 @@ help:
 	@echo "  code-sniff          Check the API with PHP Code Sniffer (PSR2)"
 	@echo "  clean               Clean directories for reset"
 	@echo "  composer-up         Update PHP dependencies with composer"
-	@echo "  up			         Create and start containers"
+	@echo "  up                  Create and start containers"
 	@echo "  stop                Stop and clear all services"
 	@echo "  gen-certs           Generate SSL certificates"
 	@echo "  logs                Follow log output"
 	@echo "  mysql-dump          Create backup of all databases"
 	@echo "  mysql-restore       Restore backup of all databases"
 	@echo "  phpmd               Analyse the API with PHP Mess Detector"
-	# @echo "  test                Test application"
+	@echo "  test                Test application (not implemented yet)"
 
 init:
 	@$(shell cp -n $(shell pwd)/web/app/composer.json.dist $(shell pwd)/web/app/composer.json 2> /dev/null)

@@ -19,6 +19,7 @@ class GenerateMigrationCommand extends Command
 
     public function execute(InputInterface $input, OutputInterface $output): int
     {
+        echo 's';
 
         return self::SUCCESS;
     }
