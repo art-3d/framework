@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace Blog\Model;
 
 use Framework\Model\ActiveRecord;
+use Framework\Model\ModelInterface;
 use Framework\Validation\Filter\Length;
 use Framework\Validation\Filter\NotBlank;
 
-class Post extends ActiveRecord
+class Post extends ActiveRecord implements ModelInterface
 {
     public string $title;
     public string $content;

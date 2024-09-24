@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace CMS\Model;
 
 use Framework\Model\ActiveRecord;
+use Framework\Model\ModelInterface;
 
-class Profile extends ActiveRecord
+class Profile extends ActiveRecord implements ModelInterface
 {
     public string $email;
     public string $password;

@@ -6,7 +6,7 @@ namespace Framework\Validation\Filter;
 
 class Length extends Filter implements FilterInterface
 {
-    public function __construct(private $min, private $max)
+    public function __construct(private int $min, private int $max)
     {
     }
 

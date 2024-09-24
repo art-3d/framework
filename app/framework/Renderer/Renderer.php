@@ -27,9 +27,6 @@ class Renderer
     ) {
     }
 
-    /**
-     * @return string content of requested view
-     */
     public function render(string $view, array $parameters = [], bool $absolute_path = false): string
     {
         $this->view = $view;
@@ -57,7 +54,7 @@ class Renderer
             echo '<input type="hidden" name="token" value="'.$token.'" />';
         };
             // End closures block **************
-        $route = $this->router->getRoute(); // array
+        $route = $this->router->getRoute();
         $user = $this->session->getUser();
 
         if ($flush = $this->session->get('message')) {

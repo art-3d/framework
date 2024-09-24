@@ -1,6 +1,6 @@
 <?php
 $activeIfRoute = function ($item) use (&$route) {
-   return $route['_name'] === $item ? 'class="active"' : '';
+    return $route['_name'] === $item ? 'class="active"' : '';
 };
 ?>
 <!DOCTYPE html>

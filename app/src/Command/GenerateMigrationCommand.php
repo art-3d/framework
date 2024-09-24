@@ -13,13 +13,14 @@ class GenerateMigrationCommand extends Command
     public function configure(): void
     {
         $this
-            ->setName('generate:migration')
-            ->setDescription('Generate a blank migration class');
+            ->setName('migration:generate')
+            ->setDescription('Generate a blank migration class')
+        ;
     }
 
     public function execute(InputInterface $input, OutputInterface $output): int
     {
-        echo 's';
+        echo 'generate migration executed' . PHP_EOL;
 
         return self::SUCCESS;
     }

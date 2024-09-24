@@ -16,7 +16,6 @@ return [
     ],
     'commands' => include('commands.php'),
     'services' => include('services.php'),
-    'commands' => include('commands.php'),
 
     'migration_path' => ''
 ];

@@ -30,7 +30,7 @@ abstract class ActiveRecord
         return $stmt->fetchObject();
     }
 
-    public function select(string $query, array $params = []): object
+    public function select(string $query, array $params = []): bool|object
     {
         $stmt = $this->pdo->prepare($query);
         $stmt->execute($params);
@@ -63,7 +63,7 @@ abstract class ActiveRecord
         $result = $this->pdo->query($query);
     }
 
-    public function findByEmail(string $email): object
+    public function findByEmail(string $email): bool|object
     {
         $query = 'SELECT * FROM `'.static::getTable().'` WHERE email = :email';
 

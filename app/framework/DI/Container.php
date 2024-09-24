@@ -4,12 +4,25 @@ declare(strict_types=1);
 
 namespace Framework\DI;
 
+use Framework\Exception\InternalException;
+
 class Container
 {
     protected array $bind = [];
     private array $container = [];
 
     public function __construct(private array $services) {}
+
+    public function getParameter(string $abstract)
+    {
+        if (!isset($this->services[$abstract])) {
+            throw new InternalException(
+                sprintf('Parameter not found: %s', $abstract)
+            );
+        }
+
+        return $this->services[$abstract];
+    }
 
     public function add(string $abstract, object $object): void
     {

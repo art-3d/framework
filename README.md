@@ -8,10 +8,11 @@
 </br>
 
 ## todo:
-- fix all features
+- fix all features [x]
 - add unit tests
 - add project description
-- create migration
+- create a migration command [x]
+- use the migration command on setup
 - add new features to framework (cache, logs, etc)
 - use queue*
 - refactor dependency injection by __construct
@@ -21,7 +22,7 @@
 - fixtures
 - explain structure of the project
 - CSRF token for forms
-- add pipeline for static analysis tool, disable push to master (PR only)
+- add pipeline for static analysis tool, disable push to master (PR only) (CI/CD)
 - use .env for config
 - EventDispatcher
 - handle 404, 5xx error

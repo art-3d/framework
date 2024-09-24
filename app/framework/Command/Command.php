@@ -19,6 +19,8 @@ abstract class Command
     private string $description = '';
     private array $options = [];
 
+    abstract public function configure(): void;
+
     abstract public function execute(InputInterface $input, OutputInterface $output): int;
 
     public function setName(string $name): self
@@ -30,11 +32,21 @@ abstract class Command
         return $this;
     }
 
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
     public function setDescription(string $description): self
     {
         $this->description = $description;
 
         return $this;
+    }
+
+    public function getDescription(): string
+    {
+        return $this->description;
     }
 
     public function addOption(string $name, string $shortcut = null, int $mode = null, string $description = null, int|string $default = null): self

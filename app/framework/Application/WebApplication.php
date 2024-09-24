@@ -54,7 +54,7 @@ final class WebApplication extends Application
 					$response = $reflectionMethod->invokeArgs($controller, $args);
 					$response->send();
 				} else {
-					throw new HttpNotFoundException('Page Not Found');
+					throw new HttpNotFoundException('Action Not Found');
 				}
 			} else {
 				// the route is not found
@@ -64,7 +64,7 @@ final class WebApplication extends Application
 			$errors = ['message' => $e->getMessage(), 'code' => $e->getCode()];
 			$templatePath = str_replace('\\', '/', __DIR__ . '/../../src/Blog/views/500.html.php');
 			$response = new Response(
-				$this->renderer->render($path, $errors, true)
+				$this->renderer->render($templatePath, $errors, true)
 			);
 			$response->send();
 		}

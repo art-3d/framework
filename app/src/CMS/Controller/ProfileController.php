@@ -45,4 +45,9 @@ class ProfileController extends Controller
 
         return $this->render('update.html', ['profile' => $profile]);
     }
+
+    public function getAction(): ResponseInterface
+    {
+        return $this->updateAction();
+    }
 }

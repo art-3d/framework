@@ -35,9 +35,10 @@ class Router
         foreach ($this->routeMap as $name => $route) {
             $requirements = isset($route['_requirements']) ? $route['_requirements'] : [];
             $pattern = $this->patternToRegexp($route['pattern'], $requirements);
-            if (preg_match($pattern, $uri)) {
+            if ($pattern === $uri || preg_match($pattern, $uri)) {
                 // check METHOD
                 if (isset($requirements['_method']) && $requirements['_method'] !== $this->request->getMethod()) {
+                    continue;
                     throw new HttpNotFoundException('Need ' . $requirements['_method'] . ' method!');
                 }
                 $match_route = $route;
